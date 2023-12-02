@@ -13,17 +13,25 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
+/**
+ * The SalesPanel class represents the panel for handling sales operations in the Sales Representative Portal.
+ */
 public class SalesPanel extends JPanel {
+    // Variables for managing sales data
     Double s_Total = 0.0;
     private DefaultTableModel productModel = new ProductTableModel();
     private JTable products = new JTable(productModel);
     private JLabel billLabel = new JLabel("Bill");
     private DefaultTableModel billModel = new BillTableModel(this);
     private JTable bill = new JTable(billModel);
+
+    // Components for search functionality
     private JTextField searchBox = new JTextField();
     private JLabel searchLabel = new JLabel("Search : ");
     private JScrollPane productScrollPane = new JScrollPane();
     private JScrollPane billScrollPane = new JScrollPane();
+
+    // Components for handling taxes, discounts, and totals
     private JLabel taxLabel = new JLabel("Tax(%): ");
     private JLabel tax = new JLabel("5");
     private JLabel discountLabel = new JLabel("Discount(%): ");
@@ -32,93 +40,111 @@ public class SalesPanel extends JPanel {
     private JLabel totalLabel = new JLabel("Total: ");
     private JLabel subTotal = new JLabel("0.0");
     private JLabel total = new JLabel("0.0");
+
+    // Buttons for canceling and charging a sale
     private JButton cancel = new JButton("Cancel");
     private JButton charge = new JButton("Charge");
+
+    // Layout manager
     private SpringLayout sLayout = new SpringLayout();
     private String north = SpringLayout.NORTH;
     private String south = SpringLayout.SOUTH;
     private String west = SpringLayout.WEST;
     private String east = SpringLayout.EAST;
-    public SalesPanel(){
+
+    /**
+     * Constructs the SalesPanel.
+     *
+     * @param UID The user ID of the sales representative.
+     */
+    public SalesPanel(Integer UID) {
         setVisible(true);
-        setSize(1680,1050);
+        setSize(1680, 1050);
         setLayout(sLayout);
 
+        // Add components to the panel
+
+        // Bill label and search components
         add(billLabel);
-        sLayout.putConstraint(north,billLabel,5,north,this);
-        sLayout.putConstraint(west,billLabel,5,west,this);
+        sLayout.putConstraint(north, billLabel, 5, north, this);
+        sLayout.putConstraint(west, billLabel, 5, west, this);
 
         add(searchLabel);
-        sLayout.putConstraint(north,searchLabel,5,north,this);
-        sLayout.putConstraint(west,searchLabel,300,west,this);
+        sLayout.putConstraint(north, searchLabel, 5, north, this);
+        sLayout.putConstraint(west, searchLabel, 300, west, this);
 
         add(searchBox);
-        sLayout.putConstraint(north,searchBox,5,north,this);
-        sLayout.putConstraint(west,searchBox,5,east,searchLabel);
-        sLayout.putConstraint(east,searchBox,-5,east,this);
+        sLayout.putConstraint(north, searchBox, 5, north, this);
+        sLayout.putConstraint(west, searchBox, 5, east, searchLabel);
+        sLayout.putConstraint(east, searchBox, -5, east, this);
 
+        // Product table
         products.setGridColor(Color.BLACK);
         products.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         productScrollPane = new JScrollPane(products);
         add(productScrollPane);
-        sLayout.putConstraint(north,productScrollPane,5,south,searchBox);
-        sLayout.putConstraint(west,productScrollPane,300,west,this);
-        sLayout.putConstraint(east,productScrollPane,-5,east,this);
-        sLayout.putConstraint(south,productScrollPane,-5,south,this);
+        sLayout.putConstraint(north, productScrollPane, 5, south, searchBox);
+        sLayout.putConstraint(west, productScrollPane, 300, west, this);
+        sLayout.putConstraint(east, productScrollPane, -5, east, this);
+        sLayout.putConstraint(south, productScrollPane, -5, south, this);
 
+        // Tax, discount, and total components
         add(taxLabel);
-        sLayout.putConstraint(north,taxLabel,500,south,billLabel);
-        sLayout.putConstraint(west,taxLabel,5,west,this);
+        sLayout.putConstraint(north, taxLabel, 500, south, billLabel);
+        sLayout.putConstraint(west, taxLabel, 5, west, this);
 
         add(tax);
-        sLayout.putConstraint(north,tax,500,south,billLabel);
-        sLayout.putConstraint(east,tax,-5,west,productScrollPane);
-        sLayout.putConstraint(west,tax,220,west,this);
+        sLayout.putConstraint(north, tax, 500, south, billLabel);
+        sLayout.putConstraint(east, tax, -5, west, productScrollPane);
+        sLayout.putConstraint(west, tax, 220, west, this);
 
         add(discountLabel);
-        sLayout.putConstraint(north,discountLabel,5,south,taxLabel);
-        sLayout.putConstraint(west,discountLabel,5,west,this);
+        sLayout.putConstraint(north, discountLabel, 5, south, taxLabel);
+        sLayout.putConstraint(west, discountLabel, 5, west, this);
 
         add(discountField);
-        sLayout.putConstraint(north,discountField,5,south,taxLabel);
-        sLayout.putConstraint(east,discountField,-5,west,productScrollPane);
-        sLayout.putConstraint(west,discountField,220,west,this);
+        sLayout.putConstraint(north, discountField, 5, south, taxLabel);
+        sLayout.putConstraint(east, discountField, -5, west, productScrollPane);
+        sLayout.putConstraint(west, discountField, 220, west, this);
 
         add(subTotalLabel);
-        sLayout.putConstraint(north,subTotalLabel,5,south,discountField);
-        sLayout.putConstraint(west,subTotalLabel,5,west,this);
+        sLayout.putConstraint(north, subTotalLabel, 5, south, discountField);
+        sLayout.putConstraint(west, subTotalLabel, 5, west, this);
 
         add(subTotal);
-        sLayout.putConstraint(north,subTotal,5,south,discountField);
-        sLayout.putConstraint(east,subTotal,-5,west,productScrollPane);
-        sLayout.putConstraint(west,subTotal,250,west,this);
+        sLayout.putConstraint(north, subTotal, 5, south, discountField);
+        sLayout.putConstraint(east, subTotal, -5, west, productScrollPane);
+        sLayout.putConstraint(west, subTotal, 250, west, this);
 
         add(totalLabel);
-        sLayout.putConstraint(north,totalLabel,5,south,subTotalLabel);
-        sLayout.putConstraint(west,totalLabel,5,west,this);
+        sLayout.putConstraint(north, totalLabel, 5, south, subTotalLabel);
+        sLayout.putConstraint(west, totalLabel, 5, west, this);
 
         add(total);
-        sLayout.putConstraint(north,total,5,south,subTotalLabel);
-        sLayout.putConstraint(east,total,-5,west,productScrollPane);
-        sLayout.putConstraint(west,total,250,west,this);
+        sLayout.putConstraint(north, total, 5, south, subTotalLabel);
+        sLayout.putConstraint(east, total, -5, west, productScrollPane);
+        sLayout.putConstraint(west, total, 250, west, this);
 
+        // Charge and cancel buttons
         add(charge);
-        sLayout.putConstraint(north,charge,10,south,totalLabel);
-        sLayout.putConstraint(east,charge,-5,west,productScrollPane);
+        sLayout.putConstraint(north, charge, 10, south, totalLabel);
+        sLayout.putConstraint(east, charge, -5, west, productScrollPane);
 
         add(cancel);
-        sLayout.putConstraint(north,cancel,10,south,totalLabel);
-        sLayout.putConstraint(east,cancel,-5,west,charge);
+        sLayout.putConstraint(north, cancel, 10, south, totalLabel);
+        sLayout.putConstraint(east, cancel, -5, west, charge);
 
+        // Bill table
         bill.setGridColor(Color.BLACK);
         bill.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         billScrollPane = new JScrollPane(bill);
         add(billScrollPane);
-        sLayout.putConstraint(north,billScrollPane,5,south,billLabel);
-        sLayout.putConstraint(west,billScrollPane,5,west,this);
-        sLayout.putConstraint(east,billScrollPane,-5,west,productScrollPane);
-        sLayout.putConstraint(south,billScrollPane,-5,north,taxLabel);
+        sLayout.putConstraint(north, billScrollPane, 5, south, billLabel);
+        sLayout.putConstraint(west, billScrollPane, 5, west, this);
+        sLayout.putConstraint(east, billScrollPane, -5, west, productScrollPane);
+        sLayout.putConstraint(south, billScrollPane, -5, north, taxLabel);
 
+        // Add listeners to components
         searchBox.getDocument().addDocumentListener(new SearchBoxListener(this));
         discountField.getDocument().addDocumentListener(new DiscountBoxListener(this));
 
@@ -128,6 +154,8 @@ public class SalesPanel extends JPanel {
         charge.addActionListener(new ChargeButtonListener(this));
         cancel.addActionListener(new CancelButtonListener(this));
     }
+
+    // Getter and setter methods...
 
     public DefaultTableModel getProductModel() {
         return productModel;

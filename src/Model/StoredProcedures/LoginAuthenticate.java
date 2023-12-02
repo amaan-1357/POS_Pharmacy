@@ -46,7 +46,7 @@ public class LoginAuthenticate {
                 } else {
                     SwingUtilities.invokeLater(() -> {
                         // Invoke the SalesRepPortal for non-manager roles
-                        SalesRepPortal srp = new SalesRepPortal();
+                        SalesRepPortal srp = new SalesRepPortal(userId);
                     });
                 }
                 return true; // Authentication successful

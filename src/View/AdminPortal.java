@@ -31,6 +31,11 @@ public class AdminPortal extends JFrame {
     private String south = SpringLayout.SOUTH;
     private String west = SpringLayout.WEST;
     private String east = SpringLayout.EAST;
+
+    /**
+     * Constructor for AdminPortal.
+     * @param UID The user ID of the admin.
+     */
     public AdminPortal(Integer UID){
         setVisible(true);
         setExtendedState(MAXIMIZED_BOTH);
@@ -39,7 +44,7 @@ public class AdminPortal extends JFrame {
         setTitle("AdminPortal");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-        sp = new SalesPanel();
+        sp = new SalesPanel(UID);
         ip = new InventoryPanel();
         up = new UsersPanel(UID);
 
@@ -108,6 +113,11 @@ public class AdminPortal extends JFrame {
         setExtendedState(MAXIMIZED_BOTH);
         setVisible(true);
     }
+
+    /**
+     * Gets the content panel of the admin portal.
+     * @return The content panel.
+     */
     public JPanel getContentPanel() {
         return contentPanel;
     }

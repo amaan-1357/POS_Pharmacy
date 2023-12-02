@@ -4,22 +4,33 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
-public class SupplierDAO implements IDAO{
-    
+/**
+ * The SupplierDAO class provides data access methods for interacting with the suppliers table.
+ */
+public class SupplierDAO implements IDAO {
+
+    /**
+     * Retrieves all suppliers from the database.
+     *
+     * @return ArrayList of Hashtables containing supplier information.
+     */
     public ArrayList<Hashtable<String, String>> load() {
         ArrayList<Hashtable<String,String>> data = new ArrayList<>();
 
+        // SQL query to select supplier_id and supplier_name from the suppliers table
         String query = "SELECT supplier_id, supplier_name FROM suppliers;";
+
         try {
             Connection conn = IDAO.getConnection();
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(query);
-            System.out.println("rs " + rs);
+
+            // Process the result set and populate the data ArrayList
             while (rs.next()) {
-                Hashtable<String,String> o = new Hashtable<>();
-                o.put("id", rs.getString(1));
-                o.put("name", rs.getString(2));
-                data.add(o);
+                Hashtable<String,String> supplierInfo = new Hashtable<>();
+                supplierInfo.put("id", rs.getString(1));
+                supplierInfo.put("name", rs.getString(2));
+                data.add(supplierInfo);
             }
         } catch (SQLException e) {
             System.out.println(e.getErrorCode());
@@ -27,22 +38,27 @@ public class SupplierDAO implements IDAO{
         return data;
     }
 
-    
+    /**
+     * Retrieves multiple suppliers based on the given supplier ID.
+     *
+     * @param id Supplier ID
+     * @return ArrayList of Hashtables containing supplier information.
+     */
     public ArrayList<Hashtable<String, String>> loadMultiple(Integer id) {
         ArrayList<Hashtable<String,String>> data = new ArrayList<>();
-        String query = "select * from suppliers where supplier_id = "+id.toString();
+        String query = "SELECT * FROM suppliers WHERE supplier_id = "+id.toString();
         try{
             Connection conn = IDAO.getConnection();
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()){
-                Hashtable<String,String> o = new Hashtable<>();
-                o.put("id", rs.getString(1));
-                o.put("name", rs.getString(2));
+                Hashtable<String,String> supplierInfo = new Hashtable<>();
+                supplierInfo.put("id", rs.getString(1));
+                supplierInfo.put("name", rs.getString(2));
                 if(!(rs.getString(3).isEmpty()))
-                    o.put("email", rs.getString(3));
-                o.put("phone_no", rs.getString(4));
-                data.add(o);
+                    supplierInfo.put("email", rs.getString(3));
+                supplierInfo.put("phone_no", rs.getString(4));
+                data.add(supplierInfo);
             }
         } catch(SQLException ex){
             System.out.println(ex.getMessage());
@@ -50,16 +66,24 @@ public class SupplierDAO implements IDAO{
         return data;
     }
 
-    
+    /**
+     * Updates supplier information based on the provided data Hashtable (not implemented).
+     *
+     * @param data Hashtable containing updated supplier information.
+     * @return Always returns false (not implemented).
+     */
     public boolean update(Hashtable<String, String> data) {
-        return false;
+        return false; // Not implemented
     }
 
-
-
-    
+    /**
+     * Inserts a new supplier into the database.
+     *
+     * @param data Hashtable containing supplier information.
+     * @return True if the insertion is successful, false otherwise.
+     */
     public boolean insert(Hashtable<String, String> data) {
-        String query = "insert into suppliers(supplier_name,email,phone_number) values ('" +
+        String query = "INSERT INTO suppliers(supplier_name,email,phone_number) VALUES ('" +
                 data.get("name") + "','" + data.get("email") + "','" + data.get("number") + "');";
         try{
             Connection conn = IDAO.getConnection();
@@ -71,8 +95,14 @@ public class SupplierDAO implements IDAO{
         return true;
     }
 
+    /**
+     * Inserts a new supplier without an email into the database.
+     *
+     * @param data Hashtable containing supplier information without email.
+     * @return True if the insertion is successful, false otherwise.
+     */
     public boolean insertWithoutEmail(Hashtable<String, String> data) {
-        String query = "insert into suppliers(supplier_name,phone_number) values ('" +
+        String query = "INSERT INTO suppliers(supplier_name,phone_number) VALUES ('" +
                 data.get("name") + "','" + data.get("number") + "');";
         try{
             Connection conn = IDAO.getConnection();
@@ -84,20 +114,26 @@ public class SupplierDAO implements IDAO{
         return true;
     }
 
-    
+    /**
+     * Retrieves a single supplier based on the given supplier ID.
+     *
+     * @param id Supplier ID
+     * @return Hashtable containing supplier information.
+     */
     public Hashtable<String, String> loadSingle(Integer id) {
         Hashtable<String,String> data = new Hashtable<>();
-        String query = "select * from suppliers where supplier_id = "+id.toString();
+        String query = "SELECT * FROM suppliers WHERE supplier_id = "+id.toString();
         try{
             Connection conn = IDAO.getConnection();
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()){
-                data.put("id", rs.getString(1));
-                data.put("name", rs.getString(2));
+                Hashtable<String,String> supplierInfo = new Hashtable<>();
+                supplierInfo.put("id", rs.getString(1));
+                supplierInfo.put("name", rs.getString(2));
                 if(!(rs.getString(3).isEmpty()))
-                    data.put("email", rs.getString(3));
-                data.put("phone_no", rs.getString(4));
+                    supplierInfo.put("email", rs.getString(3));
+                supplierInfo.put("phone_no", rs.getString(4));
             }
         } catch(SQLException ex){
             System.out.println(ex.getMessage());
@@ -105,8 +141,13 @@ public class SupplierDAO implements IDAO{
         return data;
     }
 
-    
+    /**
+     * Retrieves suppliers based on a searched keyword (not implemented).
+     *
+     * @param keyword Searched keyword
+     * @return Always returns null (not implemented).
+     */
     public ArrayList<Hashtable<String, String>> loadSearched(String keyword) {
-        return null;
+        return null; // Not implemented
     }
 }

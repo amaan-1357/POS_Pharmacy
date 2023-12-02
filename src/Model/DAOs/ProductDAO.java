@@ -4,28 +4,39 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
-public class ProductDAO implements IDAO{
-    
+/**
+ * The ProductDAO class provides data access methods for interacting with the products table.
+ */
+public class ProductDAO implements IDAO {
+
+    /**
+     * Retrieves all products from the database.
+     *
+     * @return ArrayList of Hashtables containing product information.
+     */
     public ArrayList<Hashtable<String, String>> load() {
         ArrayList<Hashtable<String,String>> data = new ArrayList<>();
 
-        String query = "select * from products";
+        // SQL query to select all rows from the products table
+        String query = "SELECT * FROM products";
+
         try {
             Connection conn = IDAO.getConnection();
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(query);
-            System.out.println("rs " + rs);
+
+            // Process the result set and populate the data ArrayList
             while (rs.next()) {
-                Hashtable<String,String> o = new Hashtable<>();
-                o.put("id", rs.getString(1 ));
-                o.put("name", rs.getString(2));
-                o.put("price", rs.getString(3));
-                o.put("category_id", rs.getString(4));
-                o.put("supplier_id", rs.getString(5));
-                o.put("quantity", rs.getString(6));
-                o.put("limit", rs.getString(7));
-                o.put("status", rs.getString(8));
-                data.add(o);
+                Hashtable<String,String> productInfo = new Hashtable<>();
+                productInfo.put("id", rs.getString(1));
+                productInfo.put("name", rs.getString(2));
+                productInfo.put("price", rs.getString(3));
+                productInfo.put("category_id", rs.getString(4));
+                productInfo.put("supplier_id", rs.getString(5));
+                productInfo.put("quantity", rs.getString(6));
+                productInfo.put("limit", rs.getString(7));
+                productInfo.put("status", rs.getString(8));
+                data.add(productInfo);
             }
         } catch (SQLException e) {
             System.out.println(e.getErrorCode());
@@ -33,8 +44,14 @@ public class ProductDAO implements IDAO{
         return data;
     }
 
+    /**
+     * Retrieves the product ID based on the given product name.
+     *
+     * @param name Product name
+     * @return Product ID or 0 if not found.
+     */
     public Integer getPID(String name){
-        String query = "select product_id from products where product_name = '"+name+"'";
+        String query = "SELECT product_id FROM products WHERE product_name = '"+name+"'";
         try {
             Connection conn = IDAO.getConnection();
             Statement stmt = conn.createStatement();
@@ -47,26 +64,31 @@ public class ProductDAO implements IDAO{
         }
         return 0;
     }
-    
-    
+
+    /**
+     * Retrieves multiple products based on the given product ID.
+     *
+     * @param id Product ID
+     * @return ArrayList of Hashtables containing product information.
+     */
     public ArrayList<Hashtable<String, String>> loadMultiple(Integer id) {
         ArrayList<Hashtable<String,String>> data = new ArrayList<>();
-        String query = "select * from products where product_id = "+id.toString();
+        String query = "SELECT * FROM products WHERE product_id = "+id.toString();
         try{
             Connection conn = IDAO.getConnection();
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()){
-                Hashtable<String,String> o = new Hashtable<>();
-                o.put("id", rs.getString(1));
-                o.put("name",rs.getString(2));
-                o.put("price", rs.getString(3));
-                o.put("category_id", rs.getString(4));
-                o.put("supplier_id", rs.getString(5));
-                o.put("quantity", rs.getString(6));
-                o.put("limit", rs.getString(7));
-                o.put("status", rs.getString(8));
-                data.add(o);
+                Hashtable<String,String> productInfo = new Hashtable<>();
+                productInfo.put("id", rs.getString(1));
+                productInfo.put("name",rs.getString(2));
+                productInfo.put("price", rs.getString(3));
+                productInfo.put("category_id", rs.getString(4));
+                productInfo.put("supplier_id", rs.getString(5));
+                productInfo.put("quantity", rs.getString(6));
+                productInfo.put("limit", rs.getString(7));
+                productInfo.put("status", rs.getString(8));
+                data.add(productInfo);
             }
         } catch(SQLException ex){
             System.out.println(ex.getMessage());
@@ -74,13 +96,25 @@ public class ProductDAO implements IDAO{
         return data;
     }
 
-    
+    /**
+     * Updates product information based on the provided data Hashtable (not implemented).
+     *
+     * @param data Hashtable containing updated product information.
+     * @return Always returns false (not implemented).
+     */
     public boolean update(Hashtable<String, String> data) {
-        return false;
+        return false; // Not implemented
     }
 
+    /**
+     * Updates the quantity of a product in the database.
+     *
+     * @param PID      Product ID
+     * @param quantity New quantity value
+     * @return True if the update is successful, false otherwise.
+     */
     public boolean updateQuantity(Integer PID, Integer quantity){
-        String query = "UPDATE products SET quantity = " + quantity.toString() + " WHERE product_id = " + PID+";";
+        String query = "UPDATE products SET quantity = " + quantity.toString() + " WHERE product_id = " + PID + ";";
         try{
             Connection conn = IDAO.getConnection();
             PreparedStatement stmt = conn.prepareStatement(query);
@@ -90,28 +124,40 @@ public class ProductDAO implements IDAO{
         }
         return true;
     }
-    
+
+    /**
+     * Inserts a new product into the database (not implemented).
+     *
+     * @param data Hashtable containing product information.
+     * @return Always returns false (not implemented).
+     */
     public boolean insert(Hashtable<String, String> data) {
-        return false;
+        return false; // Not implemented
     }
 
-    
+    /**
+     * Retrieves a single product based on the given product ID.
+     *
+     * @param id Product ID
+     * @return Hashtable containing product information.
+     */
     public Hashtable<String, String> loadSingle(Integer id) {
         Hashtable<String,String> data = new Hashtable<>();
-        String query = "select * from products where product_id = "+id.toString();
+        String query = "SELECT * FROM products WHERE product_id = "+id.toString();
         try{
             Connection conn = IDAO.getConnection();
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()){
-                data.put("id", rs.getString(1));
-                data.put("name",rs.getString(2));
-                data.put("price", rs.getString(3));
-                data.put("category_id", rs.getString(4));
-                data.put("supplier_id", rs.getString(5));
-                data.put("quantity", rs.getString(6));
-                data.put("limit", rs.getString(7));
-                data.put("status", rs.getString(8));
+                Hashtable<String,String> productInfo = new Hashtable<>();
+                productInfo.put("id", rs.getString(1));
+                productInfo.put("name",rs.getString(2));
+                productInfo.put("price", rs.getString(3));
+                productInfo.put("category_id", rs.getString(4));
+                productInfo.put("supplier_id", rs.getString(5));
+                productInfo.put("quantity", rs.getString(6));
+                productInfo.put("limit", rs.getString(7));
+                productInfo.put("status", rs.getString(8));
             }
         } catch(SQLException ex){
             System.out.println(ex.getMessage());
@@ -119,7 +165,12 @@ public class ProductDAO implements IDAO{
         return data;
     }
 
-    
+    /**
+     * Retrieves products based on a searched keyword.
+     *
+     * @param keyword Searched keyword
+     * @return ArrayList of Hashtables containing product information.
+     */
     public ArrayList<Hashtable<String, String>> loadSearched(String keyword) {
         ArrayList<Hashtable<String,String>> data = new ArrayList<>();
         String query = "SELECT * FROM products WHERE product_name LIKE '%" + keyword + "%';";
@@ -128,16 +179,16 @@ public class ProductDAO implements IDAO{
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()){
-                Hashtable<String,String> o = new Hashtable<>();
-                o.put("id", rs.getString(1));
-                o.put("name",rs.getString(2));
-                o.put("price", rs.getString(3));
-                o.put("category_id", rs.getString(4));
-                o.put("supplier_id", rs.getString(5));
-                o.put("quantity", rs.getString(6));
-                o.put("limit", rs.getString(7));
-                o.put("status", rs.getString(8));
-                data.add(o);
+                Hashtable<String,String> productInfo = new Hashtable<>();
+                productInfo.put("id", rs.getString(1));
+                productInfo.put("name",rs.getString(2));
+                productInfo.put("price", rs.getString(3));
+                productInfo.put("category_id", rs.getString(4));
+                productInfo.put("supplier_id", rs.getString(5));
+                productInfo.put("quantity", rs.getString(6));
+                productInfo.put("limit", rs.getString(7));
+                productInfo.put("status", rs.getString(8));
+                data.add(productInfo);
             }
         } catch(SQLException ex){
             System.out.println(ex.getMessage());
