@@ -11,20 +11,6 @@ import java.awt.*;
  * The SalesRepPortal class represents the main frame for the Sales Representative Portal.
  */
 public class SalesRepPortal extends JFrame {
-    // Components for the header
-    private JLabel headerLabel = new JLabel("Pharmacy POS | Sales Rep");
-    private JButton logout = new JButton("Logout");
-    private JPanel headerPane = new GradientPanel();
-
-    // Components for the content area
-    private JPanel contentPane = new JPanel();
-    private JPanel sp;
-    private SpringLayout sLayout = new SpringLayout();
-    private CardLayout cLayout = new CardLayout();
-    private String north = SpringLayout.NORTH;
-    private String south = SpringLayout.SOUTH;
-    private String west = SpringLayout.WEST;
-    private String east = SpringLayout.EAST;
 
     /**
      * Constructs the SalesRepPortal frame.
@@ -44,17 +30,25 @@ public class SalesRepPortal extends JFrame {
         gbcHeader.weightx = 1.0;
         gbcHeader.weighty = 0.1; // 10% of the height
         gbcHeader.fill = GridBagConstraints.BOTH;
+        JPanel headerPane = new GradientPanel();
         add(headerPane, gbcHeader);
 
+        SpringLayout sLayout = new SpringLayout();
         headerPane.setLayout(sLayout);
+        // Components for the header
+        JLabel headerLabel = new JLabel("Pharmacy POS | Sales Rep");
         headerPane.add(headerLabel);
+        String north = SpringLayout.NORTH;
         sLayout.putConstraint(north, headerLabel, 13, north, this);
+        String west = SpringLayout.WEST;
         sLayout.putConstraint(west, headerLabel, 10, west, this);
         Font font = new Font("Arial", Font.BOLD, 30);
         headerLabel.setFont(font);
 
+        JButton logout = new JButton("Logout");
         headerPane.add(logout);
         sLayout.putConstraint(north, logout, 13, north, this);
+        String east = SpringLayout.EAST;
         sLayout.putConstraint(west, logout, 1190, east, headerLabel);
 
         // Create content panel
@@ -64,13 +58,15 @@ public class SalesRepPortal extends JFrame {
         gbcContent.weightx = 1.0;
         gbcContent.weighty = 0.9; // 90% of the height
         gbcContent.fill = GridBagConstraints.BOTH;
+        // Components for the content area
+        JPanel contentPane = new JPanel();
         add(contentPane, gbcContent);
 
-        sp = new SalesPanel(UID);
+        JPanel sp = new SalesPanel(UID);
 
         contentPane.setLayout(new CardLayout(5, 5));
         contentPane.add(sp, "p1");
-        cLayout = (CardLayout) contentPane.getLayout();
+        CardLayout cLayout = (CardLayout) contentPane.getLayout();
         cLayout.show(contentPane, "p1");
 
         logout.addActionListener(new LogoutButtonListener(this));

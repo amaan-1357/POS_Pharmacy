@@ -97,10 +97,9 @@ public class ProductCategoryDAO implements IDAO {
     /**
      * Updates product category information based on the provided data Hashtable.
      *
-     * @param data Hashtable containing updated category information.
      * @return True if the update is successful, false otherwise.
      */
-    public boolean update(Hashtable<String, String> data) {
+    public boolean update() {
         return false; // Not implemented
     }
 
@@ -110,6 +109,7 @@ public class ProductCategoryDAO implements IDAO {
      * @param name Category name to be inserted.
      * @return True if the insertion is successful, false otherwise.
      */
+    @SuppressWarnings("SqlSourceToSinkFlow")
     public boolean insert(String name) {
         String query = "INSERT INTO product_categories(category_name) VALUES ('" + name + "')";
         try {
@@ -151,12 +151,30 @@ public class ProductCategoryDAO implements IDAO {
     }
 
     /**
-     * Retrieves product categories based on a searched keyword (not implemented).
+     * Retrieves product category information based on the given category name.
      *
-     * @param keyword Searched keyword
-     * @return ArrayList of Hashtables containing category information.
+     * @param name Category name
+     * @return Hashtable containing category information.
      */
-    public ArrayList<Hashtable<String, String>> loadSearched(String keyword) {
-        return null; // Not implemented
+    public Hashtable<String, String> loadByName(String name) {
+        Hashtable<String, String> data = new Hashtable<>();
+
+        // SQL query to select a row from the product_categories table where category_name matches the given name
+        String query = "SELECT * FROM product_categories WHERE category_name = '" + name + "'";
+
+        try {
+            Connection conn = IDAO.getConnection();
+            Statement stmt = conn.createStatement();
+            @SuppressWarnings("SqlSourceToSinkFlow") ResultSet rs = stmt.executeQuery(query);
+
+            // Process the result set and populate the data Hashtable
+            while (rs.next()) {
+                data.put("id", rs.getString(1));
+                data.put("name", rs.getString(2));
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return data;
     }
 }

@@ -1,8 +1,8 @@
 package View.Panels;
 
-import Controller.ActionListionerController.Admin.Users.AddUserButtonListener;
-import Controller.ActionListionerController.Admin.Users.DeleteUserActionListener;
-import Controller.ActionListionerController.Admin.Users.EditRoleButtonListener;
+import Controller.ActionListionerController.Admin.User.AddUserButtonListener;
+import Controller.ActionListionerController.Admin.User.DeleteUserActionListener;
+import Controller.ActionListionerController.Admin.User.EditRoleButtonListener;
 import Controller.TableModelController.UserTableModel;
 
 import javax.swing.*;
@@ -13,17 +13,8 @@ import java.awt.*;
  * The UsersPanel class represents the panel for managing user-related operations in the admin portal.
  */
 public class UsersPanel extends JPanel {
-    private JScrollPane userScrollPane = new JScrollPane();
-    private DefaultTableModel userModel;
-    private JTable userTable;
-    private JButton addUser = new JButton("Add");
-    private JButton editRole = new JButton("Edit Role");
-    private JButton deleteButton = new JButton("Delete");
-    private SpringLayout sLayout = new SpringLayout();
-    private String north = SpringLayout.NORTH;
-    private String south = SpringLayout.SOUTH;
-    private String west = SpringLayout.WEST;
-    private String east = SpringLayout.EAST;
+    private final DefaultTableModel userModel;
+    private final JTable userTable;
 
     /**
      * Constructs the UsersPanel.
@@ -33,6 +24,7 @@ public class UsersPanel extends JPanel {
     public UsersPanel(Integer UID) {
         setVisible(true);
         setSize(1680, 1050);
+        SpringLayout sLayout = new SpringLayout();
         setLayout(sLayout);
 
         userModel = new UserTableModel(UID);
@@ -40,28 +32,35 @@ public class UsersPanel extends JPanel {
 
         userTable.setGridColor(Color.BLACK);
         userTable.setRowSelectionAllowed(false);
-        userScrollPane = new JScrollPane(userTable);
+        JScrollPane userScrollPane = new JScrollPane(userTable);
         add(userScrollPane);
+        String north = SpringLayout.NORTH;
         sLayout.putConstraint(north, userScrollPane, 5, north, this);
+        String west = SpringLayout.WEST;
         sLayout.putConstraint(west, userScrollPane, 300, west, this);
+        String east = SpringLayout.EAST;
         sLayout.putConstraint(east, userScrollPane, -5, east, this);
+        String south = SpringLayout.SOUTH;
         sLayout.putConstraint(south, userScrollPane, -5, south, this);
 
+        JButton addUser = new JButton("Add");
         add(addUser);
         sLayout.putConstraint(north, addUser, 50, north, this);
         sLayout.putConstraint(west, addUser, 100, west, this);
 
+        JButton editRole = new JButton("Edit Role");
         add(editRole);
         sLayout.putConstraint(north, editRole, 5, south, addUser);
         sLayout.putConstraint(west, editRole, 100, west, this);
 
+        JButton deleteButton = new JButton("Delete");
         add(deleteButton);
         sLayout.putConstraint(north, deleteButton, 5, south, editRole);
         sLayout.putConstraint(west, deleteButton, 100, west, this);
 
         addUser.addActionListener(new AddUserButtonListener(this));
         deleteButton.addActionListener(new DeleteUserActionListener(this, UID));
-        editRole.addActionListener(new EditRoleButtonListener(this, UID));
+        editRole.addActionListener(new EditRoleButtonListener(this));
     }
 
     /**

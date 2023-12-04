@@ -13,10 +13,9 @@ import java.awt.event.ActionListener;
  */
 public class DeleteUserActionListener implements ActionListener {
 
-    private UsersPanel frame;
-    private User u = new User();
-    private JTable table;
-    private UserTableModel model;
+    private final UsersPanel frame;
+    private final User u = new User();
+    private final UserTableModel model;
     Integer UID;
 
     /**
@@ -27,7 +26,7 @@ public class DeleteUserActionListener implements ActionListener {
      */
     public DeleteUserActionListener(UsersPanel up, Integer UID) {
         frame = up;
-        table = frame.getUserTable();
+        JTable table = frame.getUserTable();
         model = (UserTableModel) table.getModel();
         this.UID = UID;
     }
@@ -52,7 +51,7 @@ public class DeleteUserActionListener implements ActionListener {
             }
             if (role.equals("manager")) {
                 JOptionPane.showMessageDialog(frame, "You cannot delete a manager!!");
-            } else if (role.equals("")) {
+            } else if (role.isEmpty()) {
                 JOptionPane.showMessageDialog(frame, "No User with the given ID exists!!");
             } else {
                 u.delete(id);

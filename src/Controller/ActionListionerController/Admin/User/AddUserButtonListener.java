@@ -11,7 +11,7 @@ import java.awt.event.ActionListener;
  * The AddUserButtonListener class handles the action when the "Add User" button is clicked.
  */
 public class AddUserButtonListener implements ActionListener {
-    private UsersPanel frame;
+    private final UsersPanel frame;
 
     /**
      * Constructor for the AddUserButtonListener.
@@ -31,6 +31,7 @@ public class AddUserButtonListener implements ActionListener {
     public void actionPerformed(ActionEvent actionEvent) {
         SwingUtilities.invokeLater(() -> {
             AddUserFrame af = new AddUserFrame(frame);
+            af.setVisible(true);
         });
     }
 }

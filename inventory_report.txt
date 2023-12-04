@@ -1,0 +1,52 @@
+Product Id: 1: 
+		Name: Aspirin
+		Price: 5.99
+		Category: Medicine
+		Supplier: Supplier 1
+		Quantity: 86
+		Limit: 10
+		Status: active
+		Batches: 
+			Batch 0 Expiry: 2023-12-31 Quantity: 66
+			Batch 1 Expiry: 2024-12-30 Quantity: 20
+Product Id: 2: 
+		Name: Cough Syrup
+		Price: 8.99
+		Category: Medicine
+		Supplier: Supplier 1
+		Quantity: 122
+		Limit: 5
+		Status: active
+		Batches: 
+			Batch 0 Expiry: 2023-11-30 Quantity: 50
+			Batch 1 Expiry: 2024-02-10 Quantity: 50
+			Batch 2 Expiry: 2023-12-31 Quantity: 22
+Product Id: 3: 
+		Name: Bandages
+		Price: 3.49
+		Category: First Aid
+		Supplier: Supplier 2
+		Quantity: 192
+		Limit: 20
+		Status: active
+		Batches: 
+			Batch 0 Expiry: 2024-02-29 Quantity: 192
+Product Id: 5: 
+		Name: Panadol
+		Price: 5.5
+		Category: Pain Killer
+		Supplier: Hamza
+		Quantity: 0
+		Limit: 10
+		Status: discontinued
+		Batches: 
+Product Id: 7: 
+		Name: Ponstan
+		Price: 7.8
+		Category: Pain Killer
+		Supplier: Amaan
+		Quantity: 88
+		Limit: 10
+		Status: active
+		Batches: 
+			Batch 0 Expiry: 3923-12-09 Quantity: 88

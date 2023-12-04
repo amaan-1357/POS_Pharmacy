@@ -12,7 +12,7 @@ import java.util.Hashtable;
  * and searched products from the respective controllers (Product, ProductCategory, Supplier).
  */
 public class ProductDataFetchers {
-    private Product product = new Product();
+    private final Product product = new Product();
     private ProductCategory productCategory = new ProductCategory();
     private Supplier supplier = new Supplier();
 
@@ -33,7 +33,7 @@ public class ProductDataFetchers {
         for (Product p : products) {
             Hashtable<String, String> o = new Hashtable<>();
             o.put("id", p.getId().toString());
-            o.put("name", p.getName().toString());
+            o.put("name", p.getName());
             o.put("price", p.getPrice().toString());
             productCategory = productCategory.loadSingle(p.getCategoryID());
             o.put("category", productCategory.getName());
@@ -59,7 +59,7 @@ public class ProductDataFetchers {
         for (Product p : products) {
             Hashtable<String, String> o = new Hashtable<>();
             o.put("id", p.getId().toString());
-            o.put("name", p.getName().toString());
+            o.put("name", p.getName());
             o.put("price", p.getPrice().toString());
             productCategory = productCategory.loadSingle(p.getCategoryID());
             supplier = supplier.loadSingle(p.getSupplierID());

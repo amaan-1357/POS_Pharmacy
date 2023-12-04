@@ -10,7 +10,7 @@ import java.util.Hashtable;
  * The ProductTableModel class extends DefaultTableModel and represents the table model for displaying product information.
  */
 public class ProductTableModel extends DefaultTableModel {
-    private ProductDataFetchers pdf = new ProductDataFetchers(); // Data fetcher for product information
+    private final ProductDataFetchers pdf = new ProductDataFetchers(); // Data fetcher for product information
 
     /**
      * Constructor for ProductTableModel.

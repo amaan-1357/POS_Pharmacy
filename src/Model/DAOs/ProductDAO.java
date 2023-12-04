@@ -1,5 +1,7 @@
 package Model.DAOs;
 
+import Controller.EntityControllers.Product;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -45,27 +47,6 @@ public class ProductDAO implements IDAO {
     }
 
     /**
-     * Retrieves the product ID based on the given product name.
-     *
-     * @param name Product name
-     * @return Product ID or 0 if not found.
-     */
-    public Integer getPID(String name){
-        String query = "SELECT product_id FROM products WHERE product_name = '"+name+"'";
-        try {
-            Connection conn = IDAO.getConnection();
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
-            if(rs.next()){
-                return Integer.parseInt(rs.getString(1));
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getErrorCode());
-        }
-        return 0;
-    }
-
-    /**
      * Retrieves multiple products based on the given product ID.
      *
      * @param id Product ID
@@ -97,24 +78,17 @@ public class ProductDAO implements IDAO {
     }
 
     /**
-     * Updates product information based on the provided data Hashtable (not implemented).
+     * Updates product information based on the provided Product p .
      *
-     * @param data Hashtable containing updated product information.
-     * @return Always returns false (not implemented).
-     */
-    public boolean update(Hashtable<String, String> data) {
-        return false; // Not implemented
-    }
-
-    /**
-     * Updates the quantity of a product in the database.
-     *
-     * @param PID      Product ID
-     * @param quantity New quantity value
+     * @param p Product containing updated product information.
      * @return True if the update is successful, false otherwise.
      */
-    public boolean updateQuantity(Integer PID, Integer quantity){
-        String query = "UPDATE products SET quantity = " + quantity.toString() + " WHERE product_id = " + PID + ";";
+    @SuppressWarnings("SqlSourceToSinkFlow")
+    public boolean update(Product p) {
+        String query = "UPDATE products SET product_name='" + p.getName() +
+                "', unit_price=" + p.getPrice() +
+                ", category_id=" +  p.getCategoryID() +
+                ", supplier_id=" +  p.getSupplierID() + " WHERE product_id=" + p.getId()+";";
         try{
             Connection conn = IDAO.getConnection();
             PreparedStatement stmt = conn.prepareStatement(query);
@@ -126,13 +100,55 @@ public class ProductDAO implements IDAO {
     }
 
     /**
-     * Inserts a new product into the database (not implemented).
+     * Updates the quantity of a product in the database.
      *
-     * @param data Hashtable containing product information.
-     * @return Always returns false (not implemented).
+     * @param PID      Product ID
+     * @param quantity New quantity value
      */
+    public void updateQuantity(Integer PID, Integer quantity){
+        String query = "UPDATE products SET quantity = " + quantity.toString() + " WHERE product_id = " + PID + ";";
+        try{
+            Connection conn = IDAO.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.executeUpdate();
+        } catch(SQLException ignored){
+        }
+    }
+
+    /**
+     * Updates the status of a product to 'discontinued' and sets quantity to 0.
+     *
+     * @param PID Product ID
+     */
+    public void updateStatus(Integer PID){
+        String query = "UPDATE products SET status = 'discontinued', quantity = 0 WHERE product_id = " + PID + ";";
+        try{
+            Connection conn = IDAO.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.executeUpdate();
+        } catch(SQLException ignored){
+        }
+    }
+
+    /**
+     * Inserts a new product into the database using the provided data.
+     *
+     * @param data A Hashtable containing the product information.
+     * @return true if the insertion is successful, false otherwise.
+     */
+    @SuppressWarnings("SqlSourceToSinkFlow")
     public boolean insert(Hashtable<String, String> data) {
-        return false; // Not implemented
+        String query = "INSERT INTO products (product_name, unit_price, category_id, supplier_id, quantity, lower_limit) " +
+                "VALUES('" + data.get("name") + "'," + data.get("price") + "," + data.get("category_id") + "," +
+                data.get("supplier_id") + "," + data.get("quantity") + "," + data.get("limit") + ");";
+        try {
+            Connection conn = IDAO.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.executeUpdate();
+        } catch (SQLException ex) {
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -149,15 +165,14 @@ public class ProductDAO implements IDAO {
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()){
-                Hashtable<String,String> productInfo = new Hashtable<>();
-                productInfo.put("id", rs.getString(1));
-                productInfo.put("name",rs.getString(2));
-                productInfo.put("price", rs.getString(3));
-                productInfo.put("category_id", rs.getString(4));
-                productInfo.put("supplier_id", rs.getString(5));
-                productInfo.put("quantity", rs.getString(6));
-                productInfo.put("limit", rs.getString(7));
-                productInfo.put("status", rs.getString(8));
+                data.put("id", rs.getString(1));
+                data.put("name",rs.getString(2));
+                data.put("price", rs.getString(3));
+                data.put("category_id", rs.getString(4));
+                data.put("supplier_id", rs.getString(5));
+                data.put("quantity", rs.getString(6));
+                data.put("limit", rs.getString(7));
+                data.put("status", rs.getString(8));
             }
         } catch(SQLException ex){
             System.out.println(ex.getMessage());
@@ -166,11 +181,45 @@ public class ProductDAO implements IDAO {
     }
 
     /**
+     * Retrieves the maximum product ID from the "products" table.
+     *
+     * @return The maximum product ID as an Integer, or 0 if there is an issue or no records.
+     */
+    public Integer getMaxId() {
+        // SQL query to get the maximum product ID
+        String query = "SELECT MAX(product_id) FROM products;";
+
+        try {
+            // Establishing a database connection
+            Connection conn = IDAO.getConnection();
+
+            // Creating a statement for executing the SQL query
+            Statement stmt = conn.createStatement();
+
+            // Executing the query and getting the result set
+            ResultSet rs = stmt.executeQuery(query);
+
+            // Checking if the result set has at least one row
+            if (rs.next()) {
+                // Parsing and returning the value of the first column (product ID) as an Integer
+                return Integer.parseInt(rs.getString(1));
+            }
+        } catch (SQLException ex) {
+            // Printing the error message to the console in case of a SQL exception
+            System.out.println(ex.getMessage());
+        }
+
+        // Returning 0 if there is an issue or no records
+        return 0;
+    }
+
+    /**
      * Retrieves products based on a searched keyword.
      *
      * @param keyword Searched keyword
      * @return ArrayList of Hashtables containing product information.
      */
+    @SuppressWarnings("SqlSourceToSinkFlow")
     public ArrayList<Hashtable<String, String>> loadSearched(String keyword) {
         ArrayList<Hashtable<String,String>> data = new ArrayList<>();
         String query = "SELECT * FROM products WHERE product_name LIKE '%" + keyword + "%';";

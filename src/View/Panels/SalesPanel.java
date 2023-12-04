@@ -1,9 +1,9 @@
 package View.Panels;
 
-import Controller.ActionListionerController.Admin.Sales.CancelButtonListener;
-import Controller.ActionListionerController.Admin.Sales.ChargeButtonListener;
-import Controller.KeyPressListenerController.DiscountBoxListener;
-import Controller.KeyPressListenerController.SearchBoxListener;
+import Controller.ActionListionerController.Admin.Sales.BillCancelButtonListener;
+import Controller.ActionListionerController.Admin.Sales.BillChargeButtonListener;
+import Controller.KeyPressListenerController.Sales.DiscountBoxListener;
+import Controller.KeyPressListenerController.Sales.SearchBoxSalesListener;
 import Controller.SelectionListeners.BillSelectionListener;
 import Controller.SelectionListeners.ProductTableSelection;
 import Controller.TableModelController.BillTableModel;
@@ -19,38 +19,19 @@ import java.awt.*;
 public class SalesPanel extends JPanel {
     // Variables for managing sales data
     Double s_Total = 0.0;
-    private DefaultTableModel productModel = new ProductTableModel();
-    private JTable products = new JTable(productModel);
-    private JLabel billLabel = new JLabel("Bill");
-    private DefaultTableModel billModel = new BillTableModel(this);
-    private JTable bill = new JTable(billModel);
+    private final DefaultTableModel productModel = new ProductTableModel();
+    private final JTable products = new JTable(productModel);
+    private final DefaultTableModel billModel = new BillTableModel();
+    private final JTable
+            bill = new JTable(billModel);
 
     // Components for search functionality
-    private JTextField searchBox = new JTextField();
-    private JLabel searchLabel = new JLabel("Search : ");
-    private JScrollPane productScrollPane = new JScrollPane();
-    private JScrollPane billScrollPane = new JScrollPane();
+    private final JTextField searchBox = new JTextField();
 
-    // Components for handling taxes, discounts, and totals
-    private JLabel taxLabel = new JLabel("Tax(%): ");
-    private JLabel tax = new JLabel("5");
-    private JLabel discountLabel = new JLabel("Discount(%): ");
-    private JTextField discountField = new JTextField("");
-    private JLabel subTotalLabel = new JLabel("Sub Total: ");
-    private JLabel totalLabel = new JLabel("Total: ");
-    private JLabel subTotal = new JLabel("0.0");
+    private final JLabel tax = new JLabel("5");
+    private final JTextField discountField = new JTextField("");
+    private final JLabel subTotal = new JLabel("0.0");
     private JLabel total = new JLabel("0.0");
-
-    // Buttons for canceling and charging a sale
-    private JButton cancel = new JButton("Cancel");
-    private JButton charge = new JButton("Charge");
-
-    // Layout manager
-    private SpringLayout sLayout = new SpringLayout();
-    private String north = SpringLayout.NORTH;
-    private String south = SpringLayout.SOUTH;
-    private String west = SpringLayout.WEST;
-    private String east = SpringLayout.EAST;
 
     /**
      * Constructs the SalesPanel.
@@ -60,35 +41,46 @@ public class SalesPanel extends JPanel {
     public SalesPanel(Integer UID) {
         setVisible(true);
         setSize(1680, 1050);
+        // Layout manager
+        SpringLayout sLayout = new SpringLayout();
         setLayout(sLayout);
+
 
         // Add components to the panel
 
         // Bill label and search components
+        JLabel billLabel = new JLabel("Bill");
         add(billLabel);
+        String north = SpringLayout.NORTH;
         sLayout.putConstraint(north, billLabel, 5, north, this);
+        String west = SpringLayout.WEST;
         sLayout.putConstraint(west, billLabel, 5, west, this);
 
+        JLabel searchLabel = new JLabel("Search : ");
         add(searchLabel);
         sLayout.putConstraint(north, searchLabel, 5, north, this);
         sLayout.putConstraint(west, searchLabel, 300, west, this);
 
         add(searchBox);
         sLayout.putConstraint(north, searchBox, 5, north, this);
+        String east = SpringLayout.EAST;
         sLayout.putConstraint(west, searchBox, 5, east, searchLabel);
         sLayout.putConstraint(east, searchBox, -5, east, this);
 
         // Product table
         products.setGridColor(Color.BLACK);
         products.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        productScrollPane = new JScrollPane(products);
+        JScrollPane productScrollPane = new JScrollPane(products);
         add(productScrollPane);
+        String south = SpringLayout.SOUTH;
         sLayout.putConstraint(north, productScrollPane, 5, south, searchBox);
         sLayout.putConstraint(west, productScrollPane, 300, west, this);
         sLayout.putConstraint(east, productScrollPane, -5, east, this);
         sLayout.putConstraint(south, productScrollPane, -5, south, this);
 
-        // Tax, discount, and total components
+        // Tax, discount, and total
+        // Components for handling taxes, discounts, and totals
+        JLabel taxLabel = new JLabel("Tax(%): ");
         add(taxLabel);
         sLayout.putConstraint(north, taxLabel, 500, south, billLabel);
         sLayout.putConstraint(west, taxLabel, 5, west, this);
@@ -98,6 +90,7 @@ public class SalesPanel extends JPanel {
         sLayout.putConstraint(east, tax, -5, west, productScrollPane);
         sLayout.putConstraint(west, tax, 220, west, this);
 
+        JLabel discountLabel = new JLabel("Discount(%): ");
         add(discountLabel);
         sLayout.putConstraint(north, discountLabel, 5, south, taxLabel);
         sLayout.putConstraint(west, discountLabel, 5, west, this);
@@ -107,6 +100,7 @@ public class SalesPanel extends JPanel {
         sLayout.putConstraint(east, discountField, -5, west, productScrollPane);
         sLayout.putConstraint(west, discountField, 220, west, this);
 
+        JLabel subTotalLabel = new JLabel("Sub Total: ");
         add(subTotalLabel);
         sLayout.putConstraint(north, subTotalLabel, 5, south, discountField);
         sLayout.putConstraint(west, subTotalLabel, 5, west, this);
@@ -116,6 +110,7 @@ public class SalesPanel extends JPanel {
         sLayout.putConstraint(east, subTotal, -5, west, productScrollPane);
         sLayout.putConstraint(west, subTotal, 250, west, this);
 
+        JLabel totalLabel = new JLabel("Total: ");
         add(totalLabel);
         sLayout.putConstraint(north, totalLabel, 5, south, subTotalLabel);
         sLayout.putConstraint(west, totalLabel, 5, west, this);
@@ -126,10 +121,13 @@ public class SalesPanel extends JPanel {
         sLayout.putConstraint(west, total, 250, west, this);
 
         // Charge and cancel buttons
+        JButton charge = new JButton("Charge");
         add(charge);
         sLayout.putConstraint(north, charge, 10, south, totalLabel);
         sLayout.putConstraint(east, charge, -5, west, productScrollPane);
 
+        // Buttons for canceling and charging a sale
+        JButton cancel = new JButton("Cancel");
         add(cancel);
         sLayout.putConstraint(north, cancel, 10, south, totalLabel);
         sLayout.putConstraint(east, cancel, -5, west, charge);
@@ -137,7 +135,7 @@ public class SalesPanel extends JPanel {
         // Bill table
         bill.setGridColor(Color.BLACK);
         bill.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        billScrollPane = new JScrollPane(bill);
+        JScrollPane billScrollPane = new JScrollPane(bill);
         add(billScrollPane);
         sLayout.putConstraint(north, billScrollPane, 5, south, billLabel);
         sLayout.putConstraint(west, billScrollPane, 5, west, this);
@@ -145,14 +143,14 @@ public class SalesPanel extends JPanel {
         sLayout.putConstraint(south, billScrollPane, -5, north, taxLabel);
 
         // Add listeners to components
-        searchBox.getDocument().addDocumentListener(new SearchBoxListener(this));
+        searchBox.getDocument().addDocumentListener(new SearchBoxSalesListener(this));
         discountField.getDocument().addDocumentListener(new DiscountBoxListener(this));
 
         products.getSelectionModel().addListSelectionListener(new ProductTableSelection(this));
         bill.getSelectionModel().addListSelectionListener(new BillSelectionListener(this));
 
-        charge.addActionListener(new ChargeButtonListener(this));
-        cancel.addActionListener(new CancelButtonListener(this));
+        charge.addActionListener(new BillChargeButtonListener(this, UID));
+        cancel.addActionListener(new BillCancelButtonListener(this));
     }
 
     // Getter and setter methods...
@@ -163,10 +161,6 @@ public class SalesPanel extends JPanel {
 
     public JTable getProducts() {
         return products;
-    }
-
-    public JLabel getBillLabel() {
-        return billLabel;
     }
 
     public JTable getBill() {
@@ -181,36 +175,12 @@ public class SalesPanel extends JPanel {
         return searchBox;
     }
 
-    public JLabel getSearchLabel() {
-        return searchLabel;
-    }
-
-    public JScrollPane getProductScrollPane() {
-        return productScrollPane;
-    }
-
-    public JLabel getTaxLabel() {
-        return taxLabel;
-    }
-
     public JLabel getTax() {
         return tax;
     }
 
-    public JLabel getDiscountLabel() {
-        return discountLabel;
-    }
-
     public JTextField getDiscountField() {
         return discountField;
-    }
-
-    public JLabel getSubTotalLabel() {
-        return subTotalLabel;
-    }
-
-    public JLabel getTotalLabel() {
-        return totalLabel;
     }
 
     public JLabel getSubTotal() {
@@ -221,19 +191,7 @@ public class SalesPanel extends JPanel {
         return total;
     }
 
-    public JButton getCancel() {
-        return cancel;
-    }
-
-    public JButton getCharge() {
-        return charge;
-    }
-
-    public SpringLayout getsLayout() {
-        return sLayout;
-    }
-
-    public Double getS_Total(){
+    public Double getS_Total() {
         return s_Total;
     }
 
@@ -241,15 +199,7 @@ public class SalesPanel extends JPanel {
         this.s_Total = s_Total;
     }
 
-    public void setSubTotal(JLabel subTotal) {
-        this.subTotal = subTotal;
-    }
-
     public void setTotal(JLabel total) {
         this.total = total;
-    }
-
-    public void setDiscountField(JTextField discountField) {
-        this.discountField = discountField;
     }
 }

@@ -1,6 +1,5 @@
 package Controller.ActionListionerController.Login;
 
-import Controller.EntityControllers.User;
 import Model.StoredProcedures.LoginAuthenticate;
 import View.LoginPage;
 
@@ -12,9 +11,8 @@ import java.awt.event.ActionListener;
  * The LoginButtonListener class handles the action when the login button is clicked on the login page.
  */
 public class LoginButtonListener implements ActionListener {
-    private LoginPage frame; // Reference to the LoginPage frame
-    private User u = new User(); // User entity for potential future use
-    private LoginAuthenticate authenticator = new LoginAuthenticate(); // Authenticator for user login
+    private final LoginPage frame; // Reference to the LoginPage frame
+    private final LoginAuthenticate authenticator = new LoginAuthenticate(); // Authenticator for user login
 
     /**
      * Constructor for the LoginButtonListener.

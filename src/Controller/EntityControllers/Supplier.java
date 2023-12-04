@@ -9,11 +9,11 @@ import java.util.Hashtable;
  * The Supplier class serves as an entity controller for managing suppliers.
  */
 public class Supplier {
-    private Integer id;
-    private String name;
-    private String email = null;
-    private String phoneNo;
-    public static SupplierDAO dao = new SupplierDAO();
+    private Integer id;         // Unique identifier of the supplier
+    private String name;        // Name of the supplier
+    private String email = null; // Email of the supplier (nullable)
+    private String phoneNo;      // Phone number of the supplier
+    public static SupplierDAO dao = new SupplierDAO(); // Data Access Object for supplier-related database operations
 
     /**
      * Default constructor for the Supplier class.
@@ -139,11 +139,9 @@ public class Supplier {
 
     /**
      * Inserts a new supplier without email information.
-     *
-     * @return A boolean indicating the success of the insertion operation.
      */
-    public boolean insertWithoutEmail() {
-        return dao.insertWithoutEmail(new Hashtable<>() {{
+    public void insertWithoutEmail() {
+        dao.insertWithoutEmail(new Hashtable<>() {{
             put("name", name);
             put("number", phoneNo);
         }});
@@ -168,6 +166,28 @@ public class Supplier {
                     d.get("phone_no"));
         }
     }
+
+    /**
+     * Retrieves information about a single supplier based on the specified name.
+     *
+     * @param name The name of the supplier.
+     * @return A Supplier instance containing supplier information.
+     */
+    public Supplier loadByName(String name) {
+        Hashtable<String, String> d = dao.loadByName(name);
+        if (d.get("email") == null) {
+            return new Supplier(Integer.parseInt(d.get("id")),
+                    d.get("name"),
+                    d.get("phone_no"));
+        } else {
+            return new Supplier(Integer.parseInt(d.get("id")),
+                    d.get("name"),
+                    d.get("email"),
+                    d.get("phone_no"));
+        }
+    }
+
+    // Getter and setter methods for the attributes
 
     /**
      * Gets the unique identifier of the supplier.
@@ -230,14 +250,5 @@ public class Supplier {
      */
     public String getPhoneNo() {
         return phoneNo;
-    }
-
-    /**
-     * Sets the phone number of the supplier.
-     *
-     * @param phoneNo The phone number to set for the supplier.
-     */
-    public void setPhoneNo(String phoneNo) {
-        this.phoneNo = phoneNo;
     }
 }

@@ -1,4 +1,4 @@
-package Controller.KeyPressListenerController;
+package Controller.KeyPressListenerController.Sales;
 
 import View.Panels.SalesPanel;
 
@@ -7,12 +7,13 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 /**
- * The DiscountBoxListener class implements DocumentListener and handles events for changes in the discount text field.
- * It ensures valid input for the discount and updates the total amount accordingly.
+ * The DiscountBoxListener class implements DocumentListener and handles events for changes
+ * in the discount text field. It ensures valid input for the discount and updates the total amount accordingly.
  */
 public class DiscountBoxListener implements DocumentListener {
 
-    private SalesPanel frame;  // Reference to the SalesPanel frame
+    // Reference to the SalesPanel frame
+    private final SalesPanel frame;
 
     /**
      * Constructor for DiscountBoxListener.
@@ -33,34 +34,41 @@ public class DiscountBoxListener implements DocumentListener {
         // Check if the entered value is a valid integer
         String q = frame.getDiscountField().getText();
         if (!q.matches("\\d*")) {
+            // Display an error message for invalid input
             JOptionPane.showMessageDialog(frame, "Invalid value",
                     "Error", JOptionPane.ERROR_MESSAGE);
+            // Reset the text field asynchronously
             setText(frame.getDiscountField());
         } else if (q.isEmpty()) {
             // If the discount field is empty, reset the total amount
             setText(frame.getDiscountField());
-            Double s = Double.parseDouble(frame.getSubTotal().getText());
+            double s = Double.parseDouble(frame.getSubTotal().getText());
             try {
-                s = Double.parseDouble(String.format("%.0f", Double.parseDouble(s.toString())));
+                // Format and parse the subtotal
+                s = Double.parseDouble(String.format("%.0f", Double.parseDouble(Double.toString(s))));
             } catch (NumberFormatException exception) {
                 System.out.println("Invalid input format");
             }
-            frame.getTotal().setText(s.toString());
+            // Update the total amount
+            frame.getTotal().setText(Double.toString(s));
         } else if (Integer.parseInt(q) > 100) {
             // Display an error message for discounts greater than 100%
             JOptionPane.showMessageDialog(frame, "Discount cannot be greater than 100",
                     "Error", JOptionPane.ERROR_MESSAGE);
+            // Reset the text field asynchronously
             setText(frame.getDiscountField());
         } else {
             // Update the total amount based on the entered discount
-            Double s = Double.parseDouble(frame.getSubTotal().getText());
-            Double t = s - ((s / 100) * Double.parseDouble(frame.getDiscountField().getText()));
+            double s = Double.parseDouble(frame.getSubTotal().getText());
+            double t = s - ((s / 100) * Double.parseDouble(frame.getDiscountField().getText()));
             try {
-                t = Double.parseDouble(String.format("%.0f", Double.parseDouble(t.toString())));
+                // Format and parse the total amount
+                t = Double.parseDouble(String.format("%.0f", Double.parseDouble(Double.toString(t))));
             } catch (NumberFormatException exception) {
                 System.out.println("Invalid input format");
             }
-            frame.getTotal().setText(t.toString());
+            // Update the total amount
+            frame.getTotal().setText(Double.toString(t));
         }
     }
 
@@ -74,34 +82,41 @@ public class DiscountBoxListener implements DocumentListener {
         // Check if the entered value is a valid integer
         String q = frame.getDiscountField().getText();
         if (!q.matches("\\d*")) {
+            // Display an error message for invalid input
             JOptionPane.showMessageDialog(frame, "Invalid value",
                     "Error", JOptionPane.ERROR_MESSAGE);
+            // Reset the text field asynchronously
             setText(frame.getDiscountField());
         } else if (q.isEmpty()) {
             // If the discount field is empty, reset the total amount
             setText(frame.getDiscountField());
-            Double s = Double.parseDouble(frame.getSubTotal().getText());
+            double s = Double.parseDouble(frame.getSubTotal().getText());
             try {
-                s = Double.parseDouble(String.format("%.0f", Double.parseDouble(s.toString())));
+                // Format and parse the subtotal
+                s = Double.parseDouble(String.format("%.0f", Double.parseDouble(Double.toString(s))));
             } catch (NumberFormatException exception) {
                 System.out.println("Invalid input format");
             }
-            frame.getTotal().setText(s.toString());
+            // Update the total amount
+            frame.getTotal().setText(Double.toString(s));
         } else if (Integer.parseInt(q) > 100) {
             // Display an error message for discounts greater than 100%
             JOptionPane.showMessageDialog(frame, "Discount cannot be greater than 100",
                     "Error", JOptionPane.ERROR_MESSAGE);
+            // Reset the text field asynchronously
             setText(frame.getDiscountField());
         } else {
             // Update the total amount based on the entered discount
-            Double s = Double.parseDouble(frame.getSubTotal().getText());
-            Double t = s - ((s / 100) * Double.parseDouble(frame.getDiscountField().getText()));
+            double s = Double.parseDouble(frame.getSubTotal().getText());
+            double t = s - ((s / 100) * Double.parseDouble(frame.getDiscountField().getText()));
             try {
-                t = Double.parseDouble(String.format("%.0f", Double.parseDouble(t.toString())));
+                // Format and parse the total amount
+                t = Double.parseDouble(String.format("%.0f", Double.parseDouble(Double.toString(t))));
             } catch (NumberFormatException exception) {
                 System.out.println("Invalid input format");
             }
-            frame.getTotal().setText(t.toString());
+            // Update the total amount
+            frame.getTotal().setText(Double.toString(t));
         }
     }
 
@@ -115,34 +130,41 @@ public class DiscountBoxListener implements DocumentListener {
         // Check if the entered value is a valid integer
         String q = frame.getDiscountField().getText();
         if (!q.matches("\\d*")) {
+            // Display an error message for invalid input
             JOptionPane.showMessageDialog(frame, "Invalid value",
                     "Error", JOptionPane.ERROR_MESSAGE);
+            // Reset the text field asynchronously
             setText(frame.getDiscountField());
         } else if (q.isEmpty()) {
             // If the discount field is empty, reset the total amount
             setText(frame.getDiscountField());
-            Double s = Double.parseDouble(frame.getSubTotal().getText());
+            double s = Double.parseDouble(frame.getSubTotal().getText());
             try {
-                s = Double.parseDouble(String.format("%.0f", Double.parseDouble(s.toString())));
+                // Format and parse the subtotal
+                s = Double.parseDouble(String.format("%.0f", Double.parseDouble(Double.toString(s))));
             } catch (NumberFormatException exception) {
                 System.out.println("Invalid input format");
             }
-            frame.getTotal().setText(s.toString());
+            // Update the total amount
+            frame.getTotal().setText(Double.toString(s));
         } else if (Integer.parseInt(q) > 100) {
             // Display an error message for discounts greater than 100%
             JOptionPane.showMessageDialog(frame, "Discount cannot be greater than 100",
                     "Error", JOptionPane.ERROR_MESSAGE);
+            // Reset the text field asynchronously
             setText(frame.getDiscountField());
         } else {
             // Update the total amount based on the entered discount
-            Double s = Double.parseDouble(frame.getSubTotal().getText());
-            Double t = s - ((s / 100) * Double.parseDouble(frame.getDiscountField().getText()));
+            double s = Double.parseDouble(frame.getSubTotal().getText());
+            double t = s - ((s / 100) * Double.parseDouble(frame.getDiscountField().getText()));
             try {
-                t = Double.parseDouble(String.format("%.0f", Double.parseDouble(t.toString())));
+                // Format and parse the total amount
+                t = Double.parseDouble(String.format("%.0f", Double.parseDouble(Double.toString(t))));
             } catch (NumberFormatException exception) {
                 System.out.println("Invalid input format");
             }
-            frame.getTotal().setText(t.toString());
+            // Update the total amount
+            frame.getTotal().setText(Double.toString(t));
         }
     }
 
@@ -152,12 +174,9 @@ public class DiscountBoxListener implements DocumentListener {
      * @param t The JTextField to set the text for.
      */
     public void setText(JTextField t) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                // This will be executed outside the event-handling code
-                t.setText("");
-            }
+        SwingUtilities.invokeLater(() -> {
+            // This will be executed outside the event-handling code
+            t.setText("");
         });
     }
 }

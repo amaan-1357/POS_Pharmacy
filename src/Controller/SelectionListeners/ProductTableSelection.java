@@ -6,16 +6,18 @@ import View.Panels.SalesPanel;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import java.text.DecimalFormat;
 
 /**
  * The ProductTableSelection class implements ListSelectionListener and handles events when a row is selected in the
  * product table. It allows users to add a selected product to the sales bill with a specified quantity.
  */
 public class ProductTableSelection implements ListSelectionListener {
-    private SalesPanel frame;        // Reference to the SalesPanel frame
-    private JTable table;            // Reference to the product table
-    private BillTableModel model;    // Reference to the bill table model
+    // Reference to the SalesPanel frame
+    private final SalesPanel frame;
+    // Reference to the product table
+    private final JTable table;
+    // Reference to the bill table model
+    private final BillTableModel model;
 
     /**
      * Constructor for ProductTableSelection.
@@ -48,8 +50,8 @@ public class ProductTableSelection implements ListSelectionListener {
             return;
         }
 
-        Integer quantity = -1;
-        Integer qty = Integer.parseInt(table.getValueAt(selectedRow, 5).toString());
+        int quantity;
+        int qty = Integer.parseInt(table.getValueAt(selectedRow, 5).toString());
         String status = table.getValueAt(selectedRow, 6).toString();
 
         // Display error messages for discontinued or out-of-stock products
@@ -67,12 +69,12 @@ public class ProductTableSelection implements ListSelectionListener {
             return;
         }
 
-        Integer PID = Integer.parseInt(table.getValueAt(selectedRow, 0).toString());
-        Integer rows = model.getRowCount();
+        int PID = Integer.parseInt(table.getValueAt(selectedRow, 0).toString());
+        int rows = model.getRowCount();
 
         // Check if the selected product is already in the bill
         for (int i = 0; i < rows; i++) {
-            Integer p = Integer.parseInt(model.getValueAt(i, 0).toString());
+            int p = Integer.parseInt(model.getValueAt(i, 0).toString());
             if (p == PID) {
                 JOptionPane.showMessageDialog(frame, "Product already added to bill.",
                         "Error", JOptionPane.ERROR_MESSAGE);
@@ -118,8 +120,6 @@ public class ProductTableSelection implements ListSelectionListener {
             return;
         }
 
-        DecimalFormat decimalFormat = new DecimalFormat("#.##");
-
         // Add the selected product to the bill table and update totals
         Double s = model.addProduct(PID, quantity);
         JOptionPane.showMessageDialog(frame, "Product added to bill.",
@@ -128,7 +128,7 @@ public class ProductTableSelection implements ListSelectionListener {
         frame.setS_Total(frame.getS_Total() + s);
         frame.getSubTotal().setText(frame.getS_Total().toString());
         s = Double.parseDouble(frame.getSubTotal().getText());
-        s = s + ((s / 100) * Integer.parseInt(frame.getTax().getText().toString()));
+        s = s + ((s / 100) * Integer.parseInt(frame.getTax().getText()));
 
         try {
             s = Double.parseDouble(String.format("%.2f", Double.parseDouble(s.toString())));
@@ -139,22 +139,22 @@ public class ProductTableSelection implements ListSelectionListener {
         frame.getSubTotal().setText(s.toString());
 
         // Update the total amount based on discounts
-        if (frame.getDiscountField().getText().equals("")) {
-            Double t = s;
+        if (frame.getDiscountField().getText().isEmpty()) {
+            double t = s;
             try {
-                t = Double.parseDouble(String.format("%.0f", Double.parseDouble(t.toString())));
+                t = Double.parseDouble(String.format("%.0f", Double.parseDouble(Double.toString(t))));
             } catch (NumberFormatException exception) {
                 System.out.println("Invalid input format");
             }
-            frame.getTotal().setText(t.toString());
+            frame.getTotal().setText(Double.toString(t));
         } else {
-            Double t = s - ((s / 100) * Double.parseDouble(frame.getDiscountField().getText()));
+            double t = s - ((s / 100) * Double.parseDouble(frame.getDiscountField().getText()));
             try {
-                t = Double.parseDouble(String.format("%.0f", Double.parseDouble(t.toString())));
+                t = Double.parseDouble(String.format("%.0f", Double.parseDouble(Double.toString(t))));
             } catch (NumberFormatException exception) {
                 System.out.println("Invalid input format");
             }
-            frame.getTotal().setText(t.toString());
+            frame.getTotal().setText(Double.toString(t));
         }
 
         table.clearSelection();  // Clear the selection after processing

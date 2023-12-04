@@ -18,20 +18,21 @@ public class UserDAO implements IDAO {
     public ArrayList<Hashtable<String, String>> load(Integer uid) {
         ArrayList<Hashtable<String,String>> data = new ArrayList<>();
 
-        String query = "select * from users where user_id NOT IN (" + uid + ");";
+        // SQL query to select user data excluding the specified user ID
+        String query = "SELECT * FROM users WHERE user_id NOT IN (" + uid + ");";
         try {
             Connection conn = IDAO.getConnection();
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(query);
-            System.out.println("rs " + rs);
 
+            // Process the result set and populate the data ArrayList
             while (rs.next()) {
-                Hashtable<String,String> o = new Hashtable<>();
-                o.put("id", rs.getString(1));
-                o.put("name", rs.getString(2));
-                o.put("u_name", rs.getString(3));
-                o.put("role", rs.getString(5));
-                data.add(o);
+                Hashtable<String,String> user = new Hashtable<>();
+                user.put("id", rs.getString(1));
+                user.put("name", rs.getString(2));
+                user.put("u_name", rs.getString(3));
+                user.put("role", rs.getString(5));
+                data.add(user);
             }
         } catch (SQLException e) {
             System.out.println(e.getErrorCode());
@@ -47,13 +48,14 @@ public class UserDAO implements IDAO {
     public ArrayList<String> loadUNames() {
         ArrayList<String> data = new ArrayList<>();
 
-        String query = "select username from users;";
+        // SQL query to select all usernames from the users table
+        String query = "SELECT username FROM users;";
         try {
             Connection conn = IDAO.getConnection();
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(query);
-            System.out.println("rs " + rs);
 
+            // Process the result set and populate the data ArrayList
             while (rs.next()) {
                 data.add(rs.getString(1));
             }
@@ -64,78 +66,13 @@ public class UserDAO implements IDAO {
     }
 
     /**
-     * Load the role of a user based on the user ID.
+     * Load the name of a user based on the user ID.
      *
-     * @param UID The user ID.
-     * @return The role of the user.
+     * @param Id The user ID.
+     * @return The name of the user.
      */
-    public String loadRole(Integer UID) {
-        String query = "SELECT role FROM users WHERE user_id = ?";
-        try (Connection conn = IDAO.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
-            stmt.setInt(1, UID);
-
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getString("role");
-                } else {
-                    // Handle the case when no rows are returned (user not found)
-                    System.out.println("User not found with ID: " + UID);
-                }
-            }
-        } catch (SQLException e) {
-            // Handle SQLException
-            System.out.println("SQL Exception: " + e.getErrorCode());
-        }
-        return "";
-    }
-
-    /**
-     * Delete a user based on the user ID.
-     *
-     * @param UID The user ID to delete.
-     * @return True if deletion is successful, false otherwise.
-     */
-    public boolean delete(Integer UID){
-        String query = "delete from users where user_id = " + UID + ";";
-        try {
-            Connection conn = IDAO.getConnection();
-            Statement stmt = conn.createStatement();
-            stmt.executeUpdate(query);
-            return true;
-        } catch (SQLException e) {
-            System.out.println(e.getErrorCode());
-        }
-        return false;
-    }
-
-    /**
-     * Get the user ID based on the username.
-     *
-     * @param u The username.
-     * @return The user ID.
-     */
-    public Integer getID(String u) {
-        String query = "select user_id from users where username = '" + u + "';";
-        try {
-            Connection conn = IDAO.getConnection();
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
-            return Integer.parseInt(rs.getString(1));
-        } catch (SQLException e) {
-            System.out.println(e.getErrorCode());
-        }
-        return 0;
-    }
-
-    /**
-     * Get the role of a user based on the user ID.
-     *
-     * @param id The user ID.
-     * @return The role of the user.
-     */
-    public String getRole(Integer id) {
-        String query = "select role from users where username = " + id + ";";
+    public String loadName(Integer Id) {
+        String query = "SELECT name FROM users WHERE user_id =" + Id + ";";
         try {
             Connection conn = IDAO.getConnection();
             Statement stmt = conn.createStatement();
@@ -148,22 +85,38 @@ public class UserDAO implements IDAO {
     }
 
     /**
+     * Delete a user based on the user ID.
+     *
+     * @param UID The user ID to delete.
+     */
+    public void delete(Integer UID){
+        // SQL query to delete a user based on the user ID
+        String query = "DELETE FROM users WHERE user_id = " + UID + ";";
+        try {
+            Connection conn = IDAO.getConnection();
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate(query);
+        } catch (SQLException e) {
+            System.out.println(e.getErrorCode());
+        }
+    }
+
+    /**
      * Load all user data.
      *
      * @return ArrayList of Hashtables containing user data.
      */
     public ArrayList<Hashtable<String, String>> load() {
-        return null;
+        return null; // Not implemented
     }
 
     /**
      * Load multiple instances of user data based on the user ID.
      *
-     * @param id The user ID.
      * @return ArrayList of Hashtables containing user data.
      */
-    public ArrayList<Hashtable<String, String>> loadMultiple(Integer id) {
-        return null;
+    public ArrayList<Hashtable<String, String>> loadMultiple() {
+        return null; // Not implemented
     }
 
     /**
@@ -173,7 +126,8 @@ public class UserDAO implements IDAO {
      * @return True if the update is successful, false otherwise.
      */
     public boolean update(Integer id) {
-        String query = "UPDATE users set role= 'manager' WHERE user_id="+id.toString()+";";
+        // SQL query to update the role of a user based on the user ID
+        String query = "UPDATE users SET role = 'manager' WHERE user_id = " + id.toString() + ";";
         try {
             Connection conn = IDAO.getConnection();
             Statement stmt = conn.createStatement();
@@ -191,8 +145,10 @@ public class UserDAO implements IDAO {
      * @param data Hashtable containing user data.
      * @return True if insertion is successful, false otherwise.
      */
+    @SuppressWarnings("SqlSourceToSinkFlow")
     public boolean insert(Hashtable<String, String> data) {
-        String query = "insert into users(name, username, password, role) values ('" +
+        // SQL query to insert a new user into the users table
+        String query = "INSERT INTO users(name, username, password, role) VALUES ('" +
                 data.get("name") + "','" + data.get("u_name") + "','" + data.get("pass") +"','" + data.get("role") + "');";
         try{
             Connection conn = IDAO.getConnection();
@@ -207,20 +163,9 @@ public class UserDAO implements IDAO {
     /**
      * Load a single instance of user data based on the user ID.
      *
-     * @param id The user ID.
      * @return Hashtable containing user data.
      */
-    public Hashtable<String, String> loadSingle(Integer id) {
-        return null;
-    }
-
-    /**
-     * Load user data based on a keyword search.
-     *
-     * @param keyword The search keyword.
-     * @return ArrayList of Hashtables containing user data.
-     */
-    public ArrayList<Hashtable<String, String>> loadSearched(String keyword) {
-        return null;
+    public Hashtable<String, String> loadSingle() {
+        return null; // Not implemented
     }
 }

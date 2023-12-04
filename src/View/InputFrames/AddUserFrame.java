@@ -1,7 +1,7 @@
 package View.InputFrames;
 
-import Controller.ActionListionerController.Admin.Users.AddUserFrame.CancelButtonListener;
-import Controller.ActionListionerController.Admin.Users.AddUserFrame.ConfirmButtonListener;
+import Controller.ActionListionerController.Admin.User.AddUserFrame.ConfirmButtonListener;
+import Controller.ActionListionerController.CancelButtonListener;
 import View.Panels.UsersPanel;
 
 import javax.swing.*;
@@ -15,13 +15,12 @@ public class AddUserFrame extends JFrame {
     JLabel usernameLabel = new JLabel("Username:");
     JLabel passwordLabel = new JLabel("Password:");
     JLabel roleLabel = new JLabel("Role:");
-    private JTextField nameField = new JTextField();
-    private JTextField usernameField = new JTextField();
-    private JTextField passwordField = new JTextField();
-    private JComboBox<String> roleComboBox;
+    private final JTextField nameField = new JTextField();
+    private final JTextField usernameField = new JTextField();
+    private final JTextField passwordField = new JTextField();
+    private final JComboBox<String> roleComboBox;
     JButton cancelButton = new JButton("Cancel");
     JButton confirmButton = new JButton("Confirm");
-    private UsersPanel frame;
 
     /**
      * Constructor for the AddUserFrame.
@@ -29,10 +28,9 @@ public class AddUserFrame extends JFrame {
      * @param up The UsersPanel where the frame is displayed.
      */
     public AddUserFrame(UsersPanel up) {
-        this.frame = up;
         setTitle("User Registration");
         setSize(400, 200);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new GridBagLayout());
         setLocationRelativeTo(null);
         setVisible(true);
@@ -76,7 +74,7 @@ public class AddUserFrame extends JFrame {
         add(confirmButton, gbc);
 
         cancelButton.addActionListener(new CancelButtonListener(this));
-        confirmButton.addActionListener(new ConfirmButtonListener(this, frame));
+        confirmButton.addActionListener(new ConfirmButtonListener(this, up));
     }
 
     public JTextField getNameField() {

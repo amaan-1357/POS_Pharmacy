@@ -9,45 +9,17 @@ import java.util.Hashtable;
  * The User class represents a user entity with various attributes.
  */
 public class User {
-    private Integer id;
-    private String name;
-    private String u_name;
-    private String password;
-    private String role;
-    private static UserDAO dao = new UserDAO();
+    private Integer id;        // User ID
+    private String name;       // User name
+    private String u_name;     // User username
+    private String password;   // User password
+    private String role;       // User role
+    private static final UserDAO dao = new UserDAO(); // Data Access Object for user-related database operations
 
     /**
      * Default constructor.
      */
     public User() {
-    }
-
-    /**
-     * Constructor to create a user with a name and role.
-     *
-     * @param name The name of the user.
-     * @param role The role of the user.
-     */
-    public User(String name, String role) {
-        this.name = name;
-        this.role = role;
-    }
-
-    /**
-     * Constructor to create a user with all attributes.
-     *
-     * @param id       The ID of the user.
-     * @param name     The name of the user.
-     * @param u_name   The username of the user.
-     * @param password The password of the user.
-     * @param role     The role of the user.
-     */
-    public User(Integer id, String name, String u_name, String password, String role) {
-        this.id = id;
-        this.name = name;
-        this.u_name = u_name;
-        this.password = password;
-        this.role = role;
     }
 
     /**
@@ -60,21 +32,6 @@ public class User {
     public User(Integer id, String name, String role) {
         this.id = id;
         this.name = name;
-        this.role = role;
-    }
-
-    /**
-     * Constructor to create a user with ID, name, username, and role.
-     *
-     * @param id     The ID of the user.
-     * @param name   The name of the user.
-     * @param u_name The username of the user.
-     * @param role   The role of the user.
-     */
-    public User(Integer id, String name, String u_name, String role) {
-        this.id = id;
-        this.name = name;
-        this.u_name = u_name;
         this.role = role;
     }
 
@@ -99,10 +56,10 @@ public class User {
      * @param UID The user ID to exclude.
      * @return ArrayList of User objects.
      */
-    public ArrayList<User> getUsers(Integer UID){
-        ArrayList<Hashtable<String,String>> data = dao.load(UID);
+    public ArrayList<User> getUsers(Integer UID) {
+        ArrayList<Hashtable<String, String>> data = dao.load(UID);
         ArrayList<User> users = new ArrayList<>();
-        for(Hashtable<String,String> d : data){
+        for (Hashtable<String, String> d : data) {
             users.add(new User(Integer.parseInt(d.get("id")),
                     d.get("name"),
                     d.get("role"))
@@ -116,7 +73,7 @@ public class User {
      *
      * @return ArrayList of usernames.
      */
-    public ArrayList<String> getUName(){
+    public ArrayList<String> getUName() {
         return dao.loadUNames();
     }
 
@@ -126,7 +83,7 @@ public class User {
      * @param user The User object to insert.
      * @return True if insertion is successful, false otherwise.
      */
-    public boolean insert(User user){
+    public boolean insert(User user) {
         return dao.insert(new Hashtable<>() {{
             put("name", user.getName());
             put("u_name", user.getU_name());
@@ -136,12 +93,22 @@ public class User {
     }
 
     /**
+     * Get the name of the user based on the user ID.
+     *
+     * @param Id The user ID.
+     * @return The name of the user.
+     */
+    public String getName(Integer Id) {
+        return dao.loadName(Id);
+    }
+
+    /**
      * Update the role of a user based on the user ID.
      *
      * @param id The user ID.
      * @return True if the update is successful, false otherwise.
      */
-    public boolean update(Integer id){
+    public boolean update(Integer id) {
         return dao.update(id);
     }
 
@@ -149,11 +116,12 @@ public class User {
      * Delete a user based on the user ID.
      *
      * @param UID The user ID to delete.
-     * @return True if deletion is successful, false otherwise.
      */
-    public boolean delete(Integer UID){
-        return dao.delete(UID);
+    public void delete(Integer UID) {
+        dao.delete(UID);
     }
+
+    // Getter methods for the attributes
 
     /**
      * Get the ID of the user.

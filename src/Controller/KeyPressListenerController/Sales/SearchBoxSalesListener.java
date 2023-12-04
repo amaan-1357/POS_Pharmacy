@@ -1,4 +1,4 @@
-package Controller.KeyPressListenerController;
+package Controller.KeyPressListenerController.Sales;
 
 import Controller.TableModelController.ProductTableModel;
 import View.Panels.SalesPanel;
@@ -7,19 +7,22 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 /**
- * The SearchBoxListener class implements DocumentListener and handles events when the text in the search box changes.
- * It updates the product table model to display either all products or searched products based on the entered text.
+ * The SearchBoxSalesListener class implements DocumentListener and handles events when
+ * the text in the search box changes. It updates the product table model to display either
+ * all products or searched products based on the entered text.
  */
-public class SearchBoxListener implements DocumentListener {
-    private SalesPanel frame;        // Reference to the SalesPanel frame
-    private ProductTableModel model; // Reference to the product table model
+public class SearchBoxSalesListener implements DocumentListener {
+    // Reference to the SalesPanel frame
+    private final SalesPanel frame;
+    // Reference to the product table model
+    private final ProductTableModel model;
 
     /**
-     * Constructor for SearchBoxListener.
+     * Constructor for SearchBoxSalesListener.
      *
      * @param sp The SalesPanel frame containing the search box and product table model.
      */
-    public SearchBoxListener(SalesPanel sp) {
+    public SearchBoxSalesListener(SalesPanel sp) {
         frame = sp;
         model = (ProductTableModel) frame.getProductModel();
     }

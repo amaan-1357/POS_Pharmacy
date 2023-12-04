@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
  * The LogoutButtonListener class implements ActionListener for handling logout button events.
  */
 public class LogoutButtonListener implements ActionListener {
-    private JFrame frame;
+    private final JFrame frame;
 
     /**
      * Constructs a LogoutButtonListener with the specified JFrame.
@@ -31,6 +31,7 @@ public class LogoutButtonListener implements ActionListener {
         frame.dispose();
         SwingUtilities.invokeLater(() -> {
             LoginPage lp = new LoginPage();
+            lp.setVisible(true);
         });
     }
 }

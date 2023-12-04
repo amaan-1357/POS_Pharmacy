@@ -85,6 +85,18 @@ public class ProductCategory {
     }
 
     /**
+     * Retrieves information about a single product category based on the specified name.
+     *
+     * @param name The name of the product category.
+     * @return A ProductCategory instance containing category information.
+     */
+    public ProductCategory loadByName(String name) {
+        Hashtable<String, String> data = dao.loadByName(name);
+        return new ProductCategory(Integer.parseInt(data.get("id")),
+                data.get("name"));
+    }
+
+    /**
      * Inserts a new product category with the specified name.
      *
      * @param name The name of the new product category to be inserted.

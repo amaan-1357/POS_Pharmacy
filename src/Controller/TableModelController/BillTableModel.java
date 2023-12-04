@@ -1,7 +1,6 @@
 package Controller.TableModelController;
 
 import Controller.EntityControllers.Product;
-import View.Panels.SalesPanel;
 
 import javax.swing.table.DefaultTableModel;
 
@@ -9,21 +8,18 @@ import javax.swing.table.DefaultTableModel;
  * The BillTableModel class extends DefaultTableModel and represents the table model for displaying items in a bill.
  */
 public class BillTableModel extends DefaultTableModel {
-    private SalesPanel frame; // Reference to the SalesPanel
 
-    private Product product = new Product();
+    private Product product = new Product(); // Instance of the Product class for loading product information
 
     /**
      * Constructor for BillTableModel.
-     *
-     * @param sp The SalesPanel associated with this table model.
      */
-    public BillTableModel(SalesPanel sp) {
+    public BillTableModel() {
         this.addColumn("PID");   // Column for Product ID
         this.addColumn("Name");  // Column for Product Name
         this.addColumn("Qty");   // Column for Quantity
         this.addColumn("Price"); // Column for Total Price
-        frame = sp;
+        // Reference to the SalesPanel
     }
 
     /**
@@ -34,12 +30,12 @@ public class BillTableModel extends DefaultTableModel {
      * @return The total price of the added product.
      */
     public Double addProduct(Integer PID, Integer qty) {
-        product = product.loadSingle(PID);
-        Double s = (Double) ((product.getPrice() * qty));
+        product = product.loadSingle(PID); // Load product information based on the given Product ID
+        double s = (product.getPrice() * qty);
 
         // Format the total price to two decimal places
         try {
-            s = Double.parseDouble(String.format("%.2f", Double.parseDouble(s.toString())));
+            s = Double.parseDouble(String.format("%.2f", Double.parseDouble(Double.toString(s))));
         } catch (NumberFormatException exception) {
             System.out.println("Invalid input format");
         }

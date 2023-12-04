@@ -1,59 +1,115 @@
 package View.Panels;
 
-import Controller.ActionListionerController.Admin.Inventory.AddCategoryListener;
+import Controller.ActionListionerController.Admin.Inventory.*;
+import Controller.KeyPressListenerController.Inventory.SearchBoxInventoryListener;
 import Controller.TableModelController.ProductTableModel;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
+/**
+ * The InventoryPanel class represents a JPanel that displays inventory information.
+ */
 public class InventoryPanel extends JPanel {
-    private DefaultTableModel productModel = new ProductTableModel();
-    private JTable products = new JTable(productModel);
-    private JScrollPane productScrollPane = new JScrollPane();
-    private JButton update = new JButton("Update Product");
-    private JButton addBatch = new JButton("Add New Batch");
-    private JButton addProduct = new JButton("Add Product");
-    private JButton deleteProduct = new JButton("Discontinue Product");
-    private JButton addCategory = new JButton("Add Category");
-    private SpringLayout sLayout = new SpringLayout();
-    private String north = SpringLayout.NORTH;
-    private String south = SpringLayout.SOUTH;
-    private String west = SpringLayout.WEST;
-    private String east = SpringLayout.EAST;
-    public InventoryPanel(){
+    private final DefaultTableModel productModel = new ProductTableModel();
+    private final JTable products = new JTable(productModel);
+    private final JTextField searchBox = new JTextField();
+
+    /**
+     * Constructor for the InventoryPanel.
+     *
+     * @param sp The SalesPanel where the InventoryPanel is displayed.
+     */
+    public InventoryPanel(JPanel sp) {
         setVisible(true);
-        setSize(1680,1050);
+        setSize(1680, 1050);
+        SpringLayout sLayout = new SpringLayout();
         setLayout(sLayout);
 
+        SalesPanel frame = (SalesPanel) sp;
+
+        JLabel searchLabel = new JLabel("Search : ");
+        add(searchLabel);
+        String north = SpringLayout.NORTH;
+        sLayout.putConstraint(north, searchLabel, 5, north, this);
+        String west = SpringLayout.WEST;
+        sLayout.putConstraint(west, searchLabel, 300, west, this);
+
+        add(searchBox);
+        String east = SpringLayout.EAST;
+        sLayout.putConstraint(north, searchBox, 5, north, this);
+        sLayout.putConstraint(west, searchBox, 5, east, searchLabel);
+        sLayout.putConstraint(east, searchBox, -5, east, this);
+
+        // Product table
         products.setGridColor(Color.BLACK);
-        productScrollPane = new JScrollPane(products);
+        products.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        JScrollPane productScrollPane = new JScrollPane(products);
         add(productScrollPane);
-        sLayout.putConstraint(north,productScrollPane,5,north,this);
-        sLayout.putConstraint(west,productScrollPane,300,west,this);
-        sLayout.putConstraint(east,productScrollPane,-5,east,this);
-        sLayout.putConstraint(south,productScrollPane,-5,south,this);
+        String south = SpringLayout.SOUTH;
+        sLayout.putConstraint(north, productScrollPane, 5, south, searchBox);
+        sLayout.putConstraint(west, productScrollPane, 300, west, this);
+        sLayout.putConstraint(east, productScrollPane, -5, east, this);
+        sLayout.putConstraint(south, productScrollPane, -5, south, this);
 
+        JButton addBatch = new JButton("Add New Batch");
         add(addBatch);
-        sLayout.putConstraint(north,addBatch,50,north,this);
-        sLayout.putConstraint(west,addBatch,100,west,this);
+        sLayout.putConstraint(north, addBatch, 50, north, this);
+        sLayout.putConstraint(west, addBatch, 100, west, this);
 
+        JButton addProduct = new JButton("Add Product");
         add(addProduct);
-        sLayout.putConstraint(north,addProduct,5,south,addBatch);
-        sLayout.putConstraint(west,addProduct,100,west,this);
+        sLayout.putConstraint(north, addProduct, 5, south, addBatch);
+        sLayout.putConstraint(west, addProduct, 100, west, this);
 
+        JButton addCategory = new JButton("Add Category");
         add(addCategory);
-        sLayout.putConstraint(north,addCategory,5,south,addProduct);
-        sLayout.putConstraint(west,addCategory,100,west,this);
+        sLayout.putConstraint(north, addCategory, 5, south, addProduct);
+        sLayout.putConstraint(west, addCategory, 100, west, this);
 
-        add(deleteProduct);
-        sLayout.putConstraint(north,deleteProduct,5,south,addCategory);
-        sLayout.putConstraint(west,deleteProduct,100,west,this);
+        JButton discontinueProduct = new JButton("Discontinue Product");
+        add(discontinueProduct);
+        sLayout.putConstraint(north, discontinueProduct, 5, south, addCategory);
+        sLayout.putConstraint(west, discontinueProduct, 100, west, this);
 
+        JButton update = new JButton("Update Product");
         add(update);
-        sLayout.putConstraint(north,update,5,south,deleteProduct);
-        sLayout.putConstraint(west,update,100,west,this);
+        sLayout.putConstraint(north, update, 5, south, discontinueProduct);
+        sLayout.putConstraint(west, update, 100, west, this);
 
         addCategory.addActionListener(new AddCategoryListener(this));
+        searchBox.getDocument().addDocumentListener(new SearchBoxInventoryListener(this));
+        addBatch.addActionListener(new AddBatchListener(this, frame));
+        addProduct.addActionListener(new AddProductListener(this, frame));
+        update.addActionListener(new UpdateProductListener(this, frame));
+        discontinueProduct.addActionListener(new DiscontinueProductListener(this, frame));
+    }
+
+    /**
+     * Gets the product model.
+     *
+     * @return The DefaultTableModel representing product information.
+     */
+    public DefaultTableModel getProductModel() {
+        return productModel;
+    }
+
+    /**
+     * Gets the products table.
+     *
+     * @return The JTable representing the products.
+     */
+    public JTable getProducts() {
+        return products;
+    }
+
+    /**
+     * Gets the search box.
+     *
+     * @return The JTextField representing the search box.
+     */
+    public JTextField getSearchBox() {
+        return searchBox;
     }
 }

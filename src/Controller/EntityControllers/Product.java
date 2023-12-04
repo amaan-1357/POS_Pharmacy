@@ -49,6 +49,9 @@ public class Product {
         this.status = status;
     }
 
+    public Product(String text, double v, Integer id, Integer id1, int i, int i1) {
+    }
+
     /**
      * Retrieves a list of all products from the database.
      *
@@ -121,13 +124,29 @@ public class Product {
     }
 
     /**
-     * Retrieves the product ID based on the product name.
+     * Inserts a new Product into the database.
      *
-     * @param name The product name.
-     * @return The product ID.
+     * @return true if the insertion is successful, false otherwise.
      */
-    public Integer getPID(String name) {
-        return dao.getPID(name);
+    public boolean insert(){
+        return dao.insert(new Hashtable<>() {{
+            put("name", name);
+            put("price", price.toString());
+            put("category_id", categoryID.toString());
+            put("supplier_id", supplierID.toString());
+            put("quantity", quantity.toString());
+            put("limit", limit.toString());
+        }});
+    }
+
+    /**
+     * Retrieves the maximum product ID using the associated DAO's getMaxId method.
+     *
+     * @return The maximum product ID as an Integer, or 0 if there is an issue or no records.
+     */
+    public Integer getMaxId() {
+        // Delegating the task to the DAO's getMaxId method
+        return dao.getMaxId();
     }
 
     /**
@@ -135,10 +154,27 @@ public class Product {
      *
      * @param PID      The product ID.
      * @param quantity The new quantity value.
-     * @return True if the update is successful, false otherwise.
      */
-    public boolean updateQty(Integer PID, Integer quantity) {
-        return dao.updateQuantity(PID, quantity);
+    public void updateQty(Integer PID, Integer quantity) {
+        dao.updateQuantity(PID, quantity);
+    }
+
+    /**
+     * Updates the status of a product in the database.
+     *
+     * @param PID The product ID.
+     */
+    public void updateStatus(Integer PID){
+        dao.updateStatus(PID);
+    }
+
+    /**
+     * Updates the information of the current product in the database.
+     *
+     * @return true if the update is successful, false otherwise.
+     */
+    public boolean update(){
+        return dao.update(this);
     }
 
     /**
@@ -199,10 +235,6 @@ public class Product {
         return supplierID;
     }
 
-    public void setSupplierID(Integer supplierID) {
-        this.supplierID = supplierID;
-    }
-
     public Integer getQuantity() {
         return quantity;
     }
@@ -213,10 +245,6 @@ public class Product {
 
     public Integer getLimit() {
         return limit;
-    }
-
-    public void setLimit(Integer limit) {
-        this.limit = limit;
     }
 
     public String getStatus() {
