@@ -50,6 +50,13 @@ public class Product {
     }
 
     public Product(String text, double v, Integer id, Integer id1, int i, int i1) {
+        this.name = text;
+        this.price = v;
+        this.categoryID = id;
+        this.supplierID = id1;
+        this.quantity = i;
+        this.limit = i1;
+        this.status = "active";
     }
 
     /**
@@ -249,5 +256,9 @@ public class Product {
 
     public String getStatus() {
         return status;
+    }
+
+    public void setSupplierID(Integer id) {
+        this.supplierID = id;
     }
 }

@@ -1,5 +1,6 @@
 package View;
 
+import Controller.ActionListionerController.DeleteExpired;
 import Controller.ActionListionerController.LogoutButtonListener;
 import View.Panels.GradientPanel;
 import View.Panels.SalesPanel;
@@ -70,6 +71,8 @@ public class SalesRepPortal extends JFrame {
         cLayout.show(contentPane, "p1");
 
         logout.addActionListener(new LogoutButtonListener(this));
+
+        DeleteExpired de = new DeleteExpired((SalesPanel) sp);
 
         pack();
         setExtendedState(MAXIMIZED_BOTH);

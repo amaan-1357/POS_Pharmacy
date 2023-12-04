@@ -20,12 +20,12 @@ import java.util.ArrayList;
  * AddProductFrame class represents a JFrame for adding product information.
  */
 public class AddProductFrame extends JFrame {
-    private final JTextField productNameField;
-    private final JTextField priceField;
-    private final JComboBox<String> categoryComboBox;
-    private final JComboBox<String> supplierComboBox;
-    private final JTextField quantityField;
-    private final JTextField lowerLimitField;
+    private JTextField productNameField;
+    private JTextField priceField;
+    private JComboBox<String> categoryComboBox;
+    private JComboBox<String> supplierComboBox;
+    private JTextField quantityField;
+    private JTextField lowerLimitField;
 
     /**
      * Constructs the AddProductFrame.

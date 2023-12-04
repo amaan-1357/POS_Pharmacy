@@ -19,8 +19,8 @@ public class ConfirmButtonListener implements ActionListener {
     private final InventoryPanel frame1;
     private final SalesPanel frame2;
     private final Product p;
-    private final ProductCategory pc = new ProductCategory();
-    private final Supplier s = new Supplier();
+    private ProductCategory pc = new ProductCategory();
+    private Supplier s = new Supplier();
 
     /**
      * Constructor for ConfirmButtonListener.
@@ -52,11 +52,12 @@ public class ConfirmButtonListener implements ActionListener {
             p.setPrice(Double.parseDouble(frame.getnPrice().getText()));
         }
         if (!frame.getnCategory().getItemAt(frame.getnCategory().getSelectedIndex()).equals("")) {
-            pc.loadByName(frame.getnCategory().getItemAt(frame.getnCategory().getSelectedIndex()).toString());
+            pc = pc.loadByName(frame.getnCategory().getItemAt(frame.getnCategory().getSelectedIndex()).toString());
             p.setCategoryID(pc.getId());
         }
         if (!frame.getnSupplier().getItemAt(frame.getnSupplier().getSelectedIndex()).equals("")) {
-            s.loadByName(frame.getnSupplier().getItemAt(frame.getnSupplier().getSelectedIndex()).toString());
+            s = s.loadByName(frame.getnSupplier().getItemAt(frame.getnSupplier().getSelectedIndex()).toString());
+            p.setSupplierID(s.getId());
         }
 
         // Update the product in the database

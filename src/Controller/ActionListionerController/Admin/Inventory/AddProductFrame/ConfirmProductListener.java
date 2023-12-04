@@ -13,6 +13,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -22,12 +23,12 @@ import java.util.regex.Pattern;
  * ActionListener for confirming the addition of a new product in the Add Product frame.
  */
 public class ConfirmProductListener implements ActionListener {
-    private final AddProductFrame frame;
+    private AddProductFrame frame;
     private final InventoryPanel frame1;
     private final SalesPanel frame2;
     private Product p = new Product();
-    private final ProductCategory pc = new ProductCategory();
-    private final Supplier s = new Supplier();
+    private ProductCategory pc = new ProductCategory();
+    private Supplier s = new Supplier();
 
     /**
      * Constructor for ConfirmProductListener.
@@ -72,12 +73,14 @@ public class ConfirmProductListener implements ActionListener {
                 }
             }
 
+            pc = pc.loadByName(frame.getCategoryComboBox().getItemAt(frame.getCategoryComboBox().getSelectedIndex()));
+            s = s.loadByName(frame.getSupplierComboBox().getItemAt(frame.getSupplierComboBox().getSelectedIndex()));
             // Create a new Product instance with the provided information
             p = new Product(
                     frame.getProductNameField().getText(),
                     Double.parseDouble(frame.getPriceField().getText()),
-                    pc.loadByName(frame.getCategoryComboBox().getItemAt(frame.getCategoryComboBox().getSelectedIndex())).getId(),
-                    s.loadByName(frame.getSupplierComboBox().getItemAt(frame.getSupplierComboBox().getSelectedIndex())).getId(),
+                    pc.getId(),
+                    s.getId(),
                     Integer.parseInt(frame.getQuantityField().getText()),
                     Integer.parseInt(frame.getLowerLimitField().getText())
             );
@@ -103,7 +106,14 @@ public class ConfirmProductListener implements ActionListener {
                     JOptionPane.showMessageDialog(frame, "Invalid date format. Please use YYYY-MM-DD.");
                 } else {
                     String[] c = input.split("-");
-                    @SuppressWarnings("deprecation") Date d = new Date(Integer.parseInt(c[0]), Integer.parseInt(c[1]) - 1, Integer.parseInt(c[2]));
+                    LocalDate dd;
+                    try {
+                        dd = LocalDate.of(Integer.parseInt(c[0]), Integer.parseInt(c[1]), Integer.parseInt(c[2]));
+                    } catch (DateTimeException ex) {
+                        JOptionPane.showMessageDialog(frame, "Invalid date.");
+                        continue;
+                    }
+                    Date d = Date.valueOf(dd);
                     Date da = Date.valueOf(LocalDate.now());
                     if (d.compareTo(da) < 0) {
                         JOptionPane.showMessageDialog(frame, "Expiry Date cannot be in the past");

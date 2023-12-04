@@ -1,27 +1,7 @@
 Sale Id: 1: 
-		Customer Name : John Doe
-		Date: 2023-11-23
-		Total Amount: 15.98
-		Items: 
-			Item 0 Name: Aspirin Quantity: 2 Item Total: 11.98
-Sale Id: 8: 
-		Customer Name : Amaan
+		Customer Name : Uzair
 		Date: 2023-12-04
-		Total Amount: 117.0
+		Total Amount: 173.0
 		Items: 
-			Item 0 Name: Ponstan Quantity: 6 Item Total: 46.8
-			Item 1 Name: Cough Syrup Quantity: 8 Item Total: 71.92
-Sale Id: 9: 
-		Customer Name : Amaan
-		Date: 2023-12-04
-		Total Amount: 106.0
-		Items: 
-			Item 0 Name: Ponstan Quantity: 6 Item Total: 46.8
-			Item 1 Name: Aspirin Quantity: 10 Item Total: 59.9
-Sale Id: 10: 
-		Customer Name : Abdullah
-		Date: 2023-12-04
-		Total Amount: 351.0
-		Items: 
-			Item 0 Name: Aspirin Quantity: 34 Item Total: 323.46
-			Item 1 Name: Bandages Quantity: 8 Item Total: 27.92
+			Item 0 Name: Panadol Quantity: 20 Item Total: 40.0
+			Item 1 Name: Cough Syrup Quantity: 15 Item Total: 134.85

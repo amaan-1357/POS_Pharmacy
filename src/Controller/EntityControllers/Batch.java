@@ -51,6 +51,25 @@ public class Batch {
     }
 
     /**
+     * Retrieves a list of all batches from the database.
+     *
+     * @return An ArrayList of Batch objects representing all batches.
+     */
+    public ArrayList<Batch> getBatches(){
+        ArrayList<Hashtable<String, String>> data = dao.load();
+        ArrayList<Batch> batches = new ArrayList<>();
+        for (Hashtable<String, String> d : data) {
+            batches.add(new Batch(
+                    Integer.parseInt(d.get("id")),
+                    Integer.parseInt(d.get("product_id")),
+                    Date.valueOf(d.get("expiry")),
+                    Integer.parseInt(d.get("qty"))
+            ));
+        }
+        return batches;
+    }
+
+    /**
      * Inserts a new batch into the database.
      *
      * @return True if the insertion is successful, false otherwise.
@@ -96,6 +115,15 @@ public class Batch {
      */
     public void deleteByPID(Integer id) {
         dao.deleteByPID(id);
+    }
+
+    /**
+     * Deletes all batches associated with a specific batch ID.
+     *
+     * @param id The batch ID for which batches are to be deleted.
+     */
+    public void deleteByID(Integer id) {
+        dao.deleteByID(id);
     }
 
     /**
@@ -151,5 +179,13 @@ public class Batch {
      */
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
+    }
+
+    public Date getExpiryDate() {
+        return date;
+    }
+
+    public Integer getProductId() {
+        return productId;
     }
 }

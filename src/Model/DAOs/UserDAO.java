@@ -66,25 +66,6 @@ public class UserDAO implements IDAO {
     }
 
     /**
-     * Load the name of a user based on the user ID.
-     *
-     * @param Id The user ID.
-     * @return The name of the user.
-     */
-    public String loadName(Integer Id) {
-        String query = "SELECT name FROM users WHERE user_id =" + Id + ";";
-        try {
-            Connection conn = IDAO.getConnection();
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
-            return rs.getString(1);
-        } catch (SQLException e) {
-            System.out.println(e.getErrorCode());
-        }
-        return "";
-    }
-
-    /**
      * Delete a user based on the user ID.
      *
      * @param UID The user ID to delete.

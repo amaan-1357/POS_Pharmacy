@@ -1,6 +1,7 @@
 package View;
 
 import Controller.ActionListionerController.Admin.*;
+import Controller.ActionListionerController.DeleteExpired;
 import Controller.ActionListionerController.LogoutButtonListener;
 import View.Panels.GradientPanel;
 import View.Panels.InventoryPanel;
@@ -103,6 +104,8 @@ public class AdminPortal extends JFrame {
         manageUsers.addActionListener(new UsersButtonListener(this));
         inventoryReport.addActionListener(new InventoryReportListener(this));
         salesReport.addActionListener(new SalesReportListener(this));
+
+        DeleteExpired de = new DeleteExpired((SalesPanel) sp);
 
         pack();
         setExtendedState(MAXIMIZED_BOTH);

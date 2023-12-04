@@ -13,19 +13,34 @@ import java.util.Hashtable;
 public class BatchDAO implements IDAO {
 
     /**
-     * Load method not implemented for this class.
-     * @return null
+     * Retrieves all batches from the database.
+     *
+     * @return ArrayList of Hashtables containing product information.
      */
     public ArrayList<Hashtable<String, String>> load() {
-        return null;
-    }
+        ArrayList<Hashtable<String,String>> data = new ArrayList<>();
 
-    /**
-     * LoadMultiple method not implemented for this class.
-     * @return null
-     */
-    public ArrayList<Hashtable<String, String>> loadMultiple() {
-        return null;
+        // SQL query to select all rows from the batches table
+        String query = "SELECT * FROM batches";
+
+        try {
+            Connection conn = IDAO.getConnection();
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+
+            // Process the result set and populate the data ArrayList
+            while (rs.next()) {
+                Hashtable<String,String> batchInfo = new Hashtable<>();
+                batchInfo.put("id", rs.getString(1));
+                batchInfo.put("product_id", rs.getString(2));
+                batchInfo.put("expiry", rs.getString(3));
+                batchInfo.put("qty", rs.getString(4));
+                data.add(batchInfo);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getErrorCode());
+        }
+        return data;
     }
 
     /**
@@ -63,6 +78,21 @@ public class BatchDAO implements IDAO {
      */
     public void deleteByPID(Integer id) {
         String query = "DELETE FROM batches WHERE product_id=" + id + ";";
+        try {
+            Connection conn = IDAO.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.executeUpdate();
+        } catch (SQLException ignored) {
+        }
+    }
+
+    /**
+     * Deletes batches associated with a specific batch ID.
+     *
+     * @param id The batch ID.
+     */
+    public void deleteByID(Integer id) {
+        String query = "DELETE FROM batches WHERE batch_id =" + id + ";";
         try {
             Connection conn = IDAO.getConnection();
             PreparedStatement stmt = conn.prepareStatement(query);

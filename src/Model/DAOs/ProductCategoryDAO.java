@@ -165,7 +165,7 @@ public class ProductCategoryDAO implements IDAO {
         try {
             Connection conn = IDAO.getConnection();
             Statement stmt = conn.createStatement();
-            @SuppressWarnings("SqlSourceToSinkFlow") ResultSet rs = stmt.executeQuery(query);
+            ResultSet rs = stmt.executeQuery(query);
 
             // Process the result set and populate the data Hashtable
             while (rs.next()) {

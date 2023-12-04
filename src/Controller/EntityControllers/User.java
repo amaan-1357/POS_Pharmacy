@@ -93,16 +93,6 @@ public class User {
     }
 
     /**
-     * Get the name of the user based on the user ID.
-     *
-     * @param Id The user ID.
-     * @return The name of the user.
-     */
-    public String getName(Integer Id) {
-        return dao.loadName(Id);
-    }
-
-    /**
      * Update the role of a user based on the user ID.
      *
      * @param id The user ID.

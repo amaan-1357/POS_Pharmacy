@@ -203,22 +203,24 @@ public class BillChargeButtonListener implements ActionListener {
         // Set the bill height for printing
         bHeight = (double) names.size();
         PrinterJob pj = PrinterJob.getPrinterJob();
-        // Show print dialog
-        if (pj.printDialog()) {
-            // Set printable content
-            pj.setPrintable(new BillPrintable(names, prices, quantities, frame.getSubTotal().getText(), frame.getTotal().getText(), SID.toString(), frame, u.getName(UID)), getPageFormat(pj));
-            try {
-                // Print the bill
-                pj.print();
-            } catch (PrinterException ex) {
-                //noinspection CallToPrintStackTrace
-                ex.printStackTrace();
+        String n = "";
+        ArrayList<User> li = u.getUsers(0);
+        for(int i = 0; i < li.size(); i++){
+            if(li.get(i).getId() == UID){
+                n = li.get(i).getName();
+                break;
             }
-        } else {
-            // If no printer is connected, prompt the user to save the print as a PDF
-            createPDF(names, prices, quantities, frame.getSubTotal().getText(), frame.getTotal().getText(), SID.toString(), frame, u.getName(UID));
         }
+        pj.setPrintable(new BillPrintable(names, prices, quantities, frame.getSubTotal().getText(), frame.getTotal().getText(), SID.toString(), frame, n), getPageFormat(pj));
+        try {
+            // Print the bill
+            pj.print();
+        } catch (PrinterException ex) {
+            //noinspection CallToPrintStackTrace
+            ex.printStackTrace();
 
+            createPDF(names, prices, quantities, frame.getSubTotal().getText(), frame.getTotal().getText(), SID.toString(), frame, n);
+        }
         // Show quantity alerts
         if(!data.isEmpty()){
             showAlerts(data);
