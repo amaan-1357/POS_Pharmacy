@@ -5,3 +5,10 @@ Sale Id: 1:
 		Items: 
 			Item 0 Name: Panadol Quantity: 20 Item Total: 40.0
 			Item 1 Name: Cough Syrup Quantity: 15 Item Total: 134.85
+Sale Id: 2: 
+		Customer Name : gsxgasj0-12
+		Date: 2023-12-05
+		Total Amount: 0.0
+		Items: 
+			Item 0 Name: Bandages Quantity: 1 Item Total: 3.49
+			Item 1 Name: Panadol Quantity: 99 Item Total: 258.0

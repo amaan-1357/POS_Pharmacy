@@ -70,6 +70,26 @@ public class ProductTableModel extends DefaultTableModel {
             this.addRow(a);
         }
     }
+    /**
+     * Sets the product information in the table model of active products.
+     * Retrieves searched product data from the data fetcher and populates the table.
+     */
+    public void setActiveInfo() {
+        ArrayList<Hashtable<String, String>> productInfo = pdf.getActiveInfo();
+        setRowCount(0); // Clear existing rows
+        for (Hashtable<String, String> hs : productInfo) {
+            // Create an Object array for each searched product and add it to the table model
+            Object[] a = {hs.get("id"),
+                    hs.get("name"),
+                    hs.get("price"),
+                    hs.get("category"),
+                    hs.get("supplier"),
+                    hs.get("quantity"),
+                    hs.get("status")
+            };
+            this.addRow(a);
+        }
+    }
 
     /**
      * Override to make all cells in the table non-editable.

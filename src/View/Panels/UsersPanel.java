@@ -60,7 +60,7 @@ public class UsersPanel extends JPanel {
 
         addUser.addActionListener(new AddUserButtonListener(this));
         deleteButton.addActionListener(new DeleteUserActionListener(this, UID));
-        editRole.addActionListener(new EditRoleButtonListener(this));
+        editRole.addActionListener(new EditRoleButtonListener(this, UID));
     }
 
     /**

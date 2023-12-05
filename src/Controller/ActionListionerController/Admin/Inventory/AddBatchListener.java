@@ -129,8 +129,9 @@ public class AddBatchListener implements ActionListener {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
         // Create a table model and table
-        ProductTableModel model = (ProductTableModel) frame.getProductModel();
-        JTable table = new JTable(model);
+        ProductTableModel mod = new ProductTableModel();
+        mod.setActiveInfo();
+        JTable table = new JTable(mod);
 
         // Add a list selection listener to the table
         table.getSelectionModel().addListSelectionListener(e -> {

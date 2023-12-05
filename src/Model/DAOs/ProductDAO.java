@@ -78,6 +78,37 @@ public class ProductDAO implements IDAO {
     }
 
     /**
+     * Retrieves multiple products based on the given product ID.
+     *
+     * @param id Product ID
+     * @return ArrayList of Hashtables containing product information.
+     */
+    public ArrayList<Hashtable<String, String>> loadActive() {
+        ArrayList<Hashtable<String,String>> data = new ArrayList<>();
+        String query = "SELECT * FROM products WHERE status = 'active';";
+        try{
+            Connection conn = IDAO.getConnection();
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()){
+                Hashtable<String,String> productInfo = new Hashtable<>();
+                productInfo.put("id", rs.getString(1));
+                productInfo.put("name",rs.getString(2));
+                productInfo.put("price", rs.getString(3));
+                productInfo.put("category_id", rs.getString(4));
+                productInfo.put("supplier_id", rs.getString(5));
+                productInfo.put("quantity", rs.getString(6));
+                productInfo.put("limit", rs.getString(7));
+                productInfo.put("status", rs.getString(8));
+                data.add(productInfo);
+            }
+        } catch(SQLException ex){
+            System.out.println(ex.getMessage());
+        }
+        return data;
+    }
+
+    /**
      * Updates product information based on the provided Product p .
      *
      * @param p Product containing updated product information.

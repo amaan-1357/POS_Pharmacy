@@ -23,19 +23,27 @@ Product Id: 3:
 		Price: 3.49
 		Category: First Aid
 		Supplier: Hamza
-		Quantity: 200
+		Quantity: 0
 		Limit: 20
-		Status: active
+		Status: discontinued
 		Batches: 
-			Batch 0 Expiry: 2024-02-29 Quantity: 200
 Product Id: 4: 
 		Name: Panadol
 		Price: 2.0
 		Category: Pain Killer
 		Supplier: Hamza
-		Quantity: 130
+		Quantity: 1
 		Limit: 30
 		Status: active
 		Batches: 
-			Batch 0 Expiry: 2024-01-30 Quantity: 100
-			Batch 1 Expiry: 2024-01-15 Quantity: 30
+			Batch 0 Expiry: 2024-01-30 Quantity: 1
+Product Id: 5: 
+		Name: DKJHE
+		Price: 1.02
+		Category: First Aid
+		Supplier: Hamza
+		Quantity: 1
+		Limit: 0
+		Status: active
+		Batches: 
+			Batch 0 Expiry: 2024-12-12 Quantity: 1

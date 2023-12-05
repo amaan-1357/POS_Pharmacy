@@ -83,6 +83,29 @@ public class Product {
     }
 
     /**
+     * Retrieves a list of all products from the database.
+     *
+     * @return An ArrayList of Product objects representing all products.
+     */
+    public ArrayList<Product> getActiveProducts() {
+        ArrayList<Hashtable<String, String>> data = dao.loadActive();
+        ArrayList<Product> products = new ArrayList<>();
+        for (Hashtable<String, String> d : data) {
+            products.add(new Product(
+                    Integer.parseInt(d.get("id")),
+                    d.get("name"),
+                    Double.valueOf(d.get("price")),
+                    Integer.parseInt(d.get("category_id")),
+                    Integer.parseInt(d.get("supplier_id")),
+                    Integer.parseInt(d.get("quantity")),
+                    Integer.parseInt(d.get("limit")),
+                    d.get("status"))
+            );
+        }
+        return products;
+    }
+
+    /**
      * Loads multiple products from the database based on a specified parameter.
      *
      * @param i The parameter used for loading multiple products.

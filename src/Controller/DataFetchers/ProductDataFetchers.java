@@ -48,6 +48,31 @@ public class ProductDataFetchers {
     }
 
     /**
+     * Retrieves information about all products, including details such as category, supplier, quantity, limit, and status.
+     *
+     * @return An ArrayList of Hashtables containing product information.
+     */
+    public ArrayList<Hashtable<String, String>> getActiveInfo() {
+        ArrayList<Product> products = product.getActiveProducts();
+        ArrayList<Hashtable<String, String>> data = new ArrayList<>();
+        for (Product p : products) {
+            Hashtable<String, String> o = new Hashtable<>();
+            o.put("id", p.getId().toString());
+            o.put("name", p.getName());
+            o.put("price", p.getPrice().toString());
+            productCategory = productCategory.loadSingle(p.getCategoryID());
+            o.put("category", productCategory.getName());
+            supplier = supplier.loadSingle(p.getSupplierID());
+            o.put("supplier", supplier.getName());
+            o.put("quantity", p.getQuantity().toString());
+            o.put("limit", p.getLimit().toString());
+            o.put("status", p.getStatus());
+            data.add(o);
+        }
+        return data;
+    }
+
+    /**
      * Retrieves information about products based on a search keyword.
      *
      * @param keyword The search keyword.

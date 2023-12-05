@@ -15,16 +15,18 @@ import java.awt.event.ActionListener;
 public class EditRoleButtonListener implements ActionListener {
     private final User u = new User();
     private final UsersPanel frame;
-    private final UserTableModel model;
+    private UserTableModel model;
+    private Integer UID;
 
     /**
      * Constructor for the EditRoleButtonListener.
      *
      * @param usersPanel The UsersPanel frame where the action is performed.
      */
-    public EditRoleButtonListener(UsersPanel usersPanel) {
+    public EditRoleButtonListener(UsersPanel usersPanel, Integer UID) {
         frame = usersPanel;
         model = (UserTableModel) frame.getUserModel();
+        this.UID = UID;
     }
 
     /**
@@ -40,12 +42,13 @@ public class EditRoleButtonListener implements ActionListener {
         // If the user confirms, proceed with role editing
         if (selection == JOptionPane.YES_OPTION) {
             // Get the selected user's ID
-            @SuppressWarnings("DataFlowIssue") int id = getSelectedUserId();
+            int id = getSelectedUserId();
 
             // Update the user's role
             u.update(id);
 
             // Refresh the user table model
+            model = (UserTableModel) frame.getUserModel();
             model.setUsersInfo();
 
             // Display a confirmation message
@@ -66,9 +69,9 @@ public class EditRoleButtonListener implements ActionListener {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
         // Create a table model and table
-        UserTableModel model = (UserTableModel) frame.getUserModel();
-        model.setNonManagers();
-        JTable table = new JTable(model);
+        UserTableModel mod = new UserTableModel(UID);
+        mod.setNonManagers();
+        JTable table = new JTable(mod);
 
         // Add a list selection listener to the table
         table.getSelectionModel().addListSelectionListener(e -> {
@@ -92,7 +95,8 @@ public class EditRoleButtonListener implements ActionListener {
 
         // Return the selected user's ID
         try {
-            return Integer.parseInt(frame.getUserTable().getValueAt(table.getSelectedRow(), 0).toString());
+
+            return Integer.parseInt(table.getValueAt(table.getSelectedRow(), 0).toString());
         } catch (ArrayIndexOutOfBoundsException e) {
             return null;
         }
